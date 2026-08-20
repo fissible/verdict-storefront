@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Verdict\PreMigrationTolerantConfigurationStore;
 use Fissible\Verdict\Approvals\DatabaseApprovalReceiptStore;
 use Fissible\Verdict\Evidence\DatabaseEvidenceRecorder;
 use Fissible\Verdict\ExecutionClaims\DatabaseExecutionClaimStore;
@@ -34,7 +35,12 @@ return [
         // would orphan surviving evidence. Object storage is likewise not the default because
         // registration is on the authorization setup path. ADR 0017 explains those trade-offs.
         // This table is intentionally never pruned with evidence.
-        'store' => null,
+        //
+        // Storefront wiring: null would auto-select the database store, but that store's
+        // boot-time write breaks `php artisan migrate` on a fresh database once any
+        // capability is affirmed (verdict#240). This app-owned store delegates to it only
+        // when the table exists; revert to null when the upstream fix ships.
+        'store' => PreMigrationTolerantConfigurationStore::class,
         'connection' => null,
         'table' => 'verdict_capability_configurations',
     ],

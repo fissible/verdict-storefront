@@ -38,7 +38,7 @@ Effort key: XS (<1h), S (1–2h), M (~half day), L (~1 day), XL (2–3 days).
 |---|---|---|---|---|
 | — | Wave 0: scaffold, CI, org wiring | M | v0.8.0 tag ✅ | **Done** (2026-08-19) |
 | [#1](https://github.com/fissible/verdict-storefront/issues/1) | Wave 1: storefront domain + synthetic seed data | M | none | **Done** (2026-08-19) |
-| [#2](https://github.com/fissible/verdict-storefront/issues/2) | Wave 2: context-resolved owned-order lookup capability | M | #1 | open |
+| [#2](https://github.com/fissible/verdict-storefront/issues/2) | Wave 2: context-resolved owned-order lookup capability | M | #1 | **Done** (2026-08-19) |
 | [#3](https://github.com/fissible/verdict-storefront/issues/3) | Wave 2: confirmation-gated refund/cancel capability | M | #1 | open |
 | [#4](https://github.com/fissible/verdict-storefront/issues/4) | Wave 3: agent + ReplayGateway (replay default) | L | #2, #3 | open |
 | [#5](https://github.com/fissible/verdict-storefront/issues/5) | Wave 3: live mode opt-in (`DEMO_MODE=live`) | S | #4 | open |
@@ -52,6 +52,23 @@ Within a wave, order by smallest-first; #2 before #3 (the owned-order lookup is 
 pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
+
+**2026-08-19 — #2 complete; upstream bug verdict#240 found and worked around.**
+- `orders.lookup` shipped TDD as `verdict:make-capability` output filled in:
+  `App\Capabilities\Orders\LookupCapability` (affirmed) — the proposed `order_number` is a
+  filter within the authenticated customer's own orders, never a global key; outside the scope
+  it throws `TargetNotResolvable`, which Verdict records as a **deny** evidence row (that is the
+  walkthrough's denied cross-principal read). `ExecutionTargetPolicy::refresh` re-loads through
+  the same scoped query; `App\Policies\OrderPolicy` is the fail-closed second layer.
+- **Upstream bug found (the integration-fixture role working):**
+  [verdict#240](https://github.com/fissible/verdict/issues/240) — boot-time configuration
+  recording breaks any artisan command (including `migrate` and `key:generate`) on a fresh
+  database once a capability is affirmed. Worked around by
+  `App\Verdict\PreMigrationTolerantConfigurationStore` (configured in `config/verdict.php`);
+  **delete the class and revert `capability_configurations.store` to null when #240 ships.**
+- **Next task: #3** (confirmation-gated refund/cancel). Reuse the scoped-resolver shape; add
+  `requiresConfirmation()` + execution-target policy per verdict#230/#231; ORD-1001 (delivered,
+  Alice's) is the refund walkthrough's order.
 
 **2026-08-19 — Wave 1 (#1) complete.**
 - Domain shipped TDD: `Product`, `Order` (+`OrderStatus` enum), `OrderItem`, `Refund`, one
