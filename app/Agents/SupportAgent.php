@@ -50,7 +50,13 @@ final class SupportAgent implements Agent, HasMiddleware, HasTools, RemembersCon
     public function tools(): array
     {
         $verdict = app(VerdictManager::class);
-        $context = fn (Request $request): ActionContext => new ActionContext(actor: Auth::user());
+
+        // The conversation's participant, not Auth::user(): on a reviewer-driven
+        // resume the authenticated user is the approver, but the capability's
+        // scoped queries must resolve inside the CUSTOMER's order authority.
+        $context = fn (Request $request): ActionContext => new ActionContext(
+            actor: $this->conversationUser ?? Auth::user(),
+        );
 
         return [
             $verdict->bound(new LookupOrderTool, 'orders.lookup', $context),

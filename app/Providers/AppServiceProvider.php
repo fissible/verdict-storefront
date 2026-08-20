@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Replay\ReplayGateway;
 use App\Replay\ReplayScripts;
 use Fissible\Verdict\Approvals\ApproverAudience;
@@ -9,6 +10,7 @@ use Fissible\Verdict\Context\DataClass;
 use Fissible\Verdict\Context\ReleasePolicy;
 use Fissible\Verdict\Context\Trust;
 use Fissible\Verdict\VerdictManager;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Ai\Ai;
 
@@ -27,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Who may decide pending approvals (the approval-flow skeleton's
+        // reviewer policy): the seeded reviewer, not the customers.
+        Gate::define('review-approvals', fn (User $user): bool => $user->is_reviewer);
+
         // Replay by default (#237 design): the app-owned gateway substitutes only
         // the model step of the laravel/ai pipeline. Live mode is ordinary provider
         // configuration — one env change away (DEMO_MODE=live).

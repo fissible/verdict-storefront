@@ -48,6 +48,13 @@ final class DatabaseSeeder extends Seeder
             ['name' => $name, 'password' => 'password'],
         ));
 
+        // The approval walkthrough's reviewer: decides pending approvals, owns
+        // no orders, and is not a customer in any recorded scenario.
+        User::updateOrCreate(
+            ['email' => 'sam@example.com'],
+            ['name' => 'Sam Reyes', 'password' => 'password', 'is_reviewer' => true],
+        );
+
         $products = collect(self::PRODUCTS)->map(fn (array $spec, string $sku) => Product::updateOrCreate(
             ['sku' => $sku],
             ['name' => $spec[0], 'price_cents' => $spec[1]],

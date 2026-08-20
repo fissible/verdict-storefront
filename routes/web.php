@@ -15,3 +15,5 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/chat', [ChatController::class, 'show'])->name('chat');
     Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
 });
+
+require __DIR__.'/verdict-approval-flow.php';

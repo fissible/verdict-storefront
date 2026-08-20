@@ -22,13 +22,20 @@ final class DemoSeedTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_seeds_the_two_demo_customers(): void
+    public function test_seeds_the_two_demo_customers_and_the_reviewer(): void
     {
         $this->seed();
 
         $this->assertNotNull(User::where('email', 'alice@example.com')->first());
         $this->assertNotNull(User::where('email', 'bruno@example.com')->first());
-        $this->assertSame(2, User::count());
+        $this->assertSame(3, User::count());
+
+        // The approval walkthrough needs a reviewer who is not the customer:
+        // Sam decides approvals and owns no orders.
+        $sam = User::where('email', 'sam@example.com')->firstOrFail();
+        $this->assertTrue((bool) $sam->is_reviewer);
+        $this->assertSame(0, $sam->orders()->count());
+        $this->assertFalse((bool) User::where('email', 'alice@example.com')->firstOrFail()->is_reviewer);
     }
 
     public function test_alice_owns_the_walkthrough_orders_and_bruno_the_cross_principal_ones(): void

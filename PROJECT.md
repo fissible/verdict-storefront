@@ -43,7 +43,7 @@ Effort key: XS (<1h), S (1–2h), M (~half day), L (~1 day), XL (2–3 days).
 | [#4](https://github.com/fissible/verdict-storefront/issues/4) | Wave 3: agent + ReplayGateway (replay default) | L | #2, #3 | **Done** (2026-08-19) |
 | [#5](https://github.com/fissible/verdict-storefront/issues/5) | Wave 3: live mode opt-in (`DEMO_MODE=live`) | S | #4 | **Done** (2026-08-19) |
 | [#6](https://github.com/fissible/verdict-storefront/issues/6) | Wave 4: support chat UI + mode banner | M | #4 | **Done** (2026-08-19) |
-| [#7](https://github.com/fissible/verdict-storefront/issues/7) | Wave 4: approval screen + exactly-once resume | M | #3, #4 | open |
+| [#7](https://github.com/fissible/verdict-storefront/issues/7) | Wave 4: approval screen + exactly-once resume | M | #3, #4 | **Done** (2026-08-19) |
 | [#8](https://github.com/fissible/verdict-storefront/issues/8) | Wave 4: evidence browser (read-only) | M | #4 | open |
 | [#9](https://github.com/fissible/verdict-storefront/issues/9) | Wave 4: "try to break it" page | M | #4, #6 | open |
 | [#10](https://github.com/fissible/verdict-storefront/issues/10) | Wave 5: README walkthroughs + acceptance pass | M | #2–#9 | open |
@@ -52,6 +52,21 @@ Within a wave, order by smallest-first; #2 before #3 (the owned-order lookup is 
 pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
+
+**2026-08-19 — #7 complete: the approval round-trip is clickable.**
+- Built from the `verdict:make-approval-flow` skeletons with every TODO answered: reviewer
+  authorization is the `review-approvals` gate (new seeded reviewer Sam Reyes,
+  `users.is_reviewer`); receipt/conversation ownership is verified against the app's own
+  conversation store; the resume runs only after the durable transition succeeds.
+- `/approvals` composes Verdict's challenge (capability, reason, expiry — no raw arguments by
+  design) with app-owned display context (arguments + customer from the conversation store).
+- **The resume runs as the conversation's participant, not the reviewer** —
+  `ResumesApprovedConversations` + SupportAgent's context callable using `conversationUser`;
+  otherwise the customer-scoped refresh would deny inside the reviewer's empty order scope.
+- A second decision submission surfaces as an outcome (`already_resolved` /
+  ApprovalMismatchException), never a second refund. Reject resumes with `Decision::reject()`
+  so the customer's chat shows the decline.
+- **Next task: #8** (evidence browser), then #9 (try-to-break page), #10 (README walkthroughs).
 
 **2026-08-19 — #6 complete: the app has a face.**
 - Landing page with one-click demo sign-in (Alice/Bruno — demo-only pattern, commented as such);

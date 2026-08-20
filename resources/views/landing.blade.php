@@ -21,6 +21,11 @@
             <input type="hidden" name="email" value="bruno@example.com">
             <button type="submit">Bruno Marchetti</button>
         </form>
+        <form method="POST" action="{{ route('demo-login') }}" style="display:inline">
+            @csrf
+            <input type="hidden" name="email" value="sam@example.com">
+            <button type="submit">Sam Reyes (reviewer)</button>
+        </form>
     </div>
 
     @error('email')<p class="notice">{{ $message }}</p>@enderror

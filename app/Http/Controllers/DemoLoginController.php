@@ -23,9 +23,11 @@ final class DemoLoginController extends Controller
             'email' => ['required', 'email', Rule::exists('users', 'email')],
         ]);
 
-        Auth::login(User::where('email', $validated['email'])->firstOrFail());
+        $user = User::where('email', $validated['email'])->firstOrFail();
+
+        Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('chat');
+        return redirect()->route($user->is_reviewer ? 'approvals' : 'chat');
     }
 }
