@@ -42,7 +42,7 @@ Effort key: XS (<1h), S (1–2h), M (~half day), L (~1 day), XL (2–3 days).
 | [#3](https://github.com/fissible/verdict-storefront/issues/3) | Wave 2: confirmation-gated refund/cancel capability | M | #1 | **Done** (2026-08-19) |
 | [#4](https://github.com/fissible/verdict-storefront/issues/4) | Wave 3: agent + ReplayGateway (replay default) | L | #2, #3 | **Done** (2026-08-19) |
 | [#5](https://github.com/fissible/verdict-storefront/issues/5) | Wave 3: live mode opt-in (`DEMO_MODE=live`) | S | #4 | **Done** (2026-08-19) |
-| [#6](https://github.com/fissible/verdict-storefront/issues/6) | Wave 4: support chat UI + mode banner | M | #4 | open |
+| [#6](https://github.com/fissible/verdict-storefront/issues/6) | Wave 4: support chat UI + mode banner | M | #4 | **Done** (2026-08-19) |
 | [#7](https://github.com/fissible/verdict-storefront/issues/7) | Wave 4: approval screen + exactly-once resume | M | #3, #4 | open |
 | [#8](https://github.com/fissible/verdict-storefront/issues/8) | Wave 4: evidence browser (read-only) | M | #4 | open |
 | [#9](https://github.com/fissible/verdict-storefront/issues/9) | Wave 4: "try to break it" page | M | #4, #6 | open |
@@ -52,6 +52,20 @@ Within a wave, order by smallest-first; #2 before #3 (the owned-order lookup is 
 pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
+
+**2026-08-19 — #6 complete: the app has a face.**
+- Landing page with one-click demo sign-in (Alice/Bruno — demo-only pattern, commented as such);
+  authenticated /chat renders the durable conversation (messages via SQLite `rowid` for
+  same-second ordering), shows each assistant turn's proposed tool calls, offers the recorded
+  walkthrough prompts as buttons plus free-form input, and a persistent
+  "waiting for human approval" notice while a receipt is pending.
+- The mode banner is in the layout — every page carries it: replay (with a provenance link)
+  vs live (naming model + provider, with the refusal-is-a-result note). Blade only, no Node.
+- Smoke-tested through `php artisan serve` + curl on a fresh-clone database.
+- **Next task: #7** (approval screen + exactly-once resume). The chat notice already points
+  there; the resume mechanics are proven in SupportAgentReplayTest — the screen wraps
+  `challengeForToolCall` → `approve`/`reject` → `continueLastConversation` with the per-call
+  Decision, and must treat a second submission as an error (ApprovalMismatchException).
 
 **2026-08-19 — #5 complete; live mode VALIDATED against a real model.**
 - `DEMO_MODE=live` routes to real providers (the replay gateway binds only in replay mode —
