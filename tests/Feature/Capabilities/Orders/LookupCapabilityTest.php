@@ -42,8 +42,9 @@ final class LookupCapabilityTest extends TestCase
         $result = app(VerdictManager::class)->runBound($this->lookupEnvelope($alice, 'ORD-1001'));
 
         $this->assertTrue($result->executed);
-        $this->assertSame('ORD-1001', $result->output['number']);
-        $this->assertSame($order->status->value, $result->output['status']);
+        $disclosure = json_decode((string) $result->output, true, flags: JSON_THROW_ON_ERROR);
+        $this->assertSame('ORD-1001', $disclosure['number']);
+        $this->assertSame($order->status->value, $disclosure['status']);
         $this->assertDatabaseHas('verdict_evidence', [
             'capability' => 'orders.lookup',
             'disposition' => 'permit',

@@ -87,7 +87,7 @@ final class RefundCapability implements DefinesCapability
                     'order_status' => $order->status->value,
                 ],
             ))
-            ->executeUsing(function (AuthorizedAction $action): array {
+            ->executeUsing(function (AuthorizedAction $action): string {
                 /** @var Order $order */
                 $order = $action->target;
 
@@ -98,12 +98,13 @@ final class RefundCapability implements DefinesCapability
                 ]);
                 $order->update(['status' => OrderStatus::Refunded]);
 
-                return [
+                // A bound tool's result returns to the model as text.
+                return json_encode([
                     'refund_id' => $refund->id,
                     'order_number' => $order->number,
                     'amount_cents' => $refund->amount_cents,
                     'status' => OrderStatus::Refunded->value,
-                ];
+                ], JSON_THROW_ON_ERROR);
             });
     }
 }

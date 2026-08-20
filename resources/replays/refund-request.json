@@ -1,0 +1,22 @@
+{
+    "prompt": "Please refund order ORD-1001 — it arrived damaged.",
+    "provenance": {
+        "model": "authored captured proposal — no model produced this recording; live-model behavior is measured in fissible/verdict docs/evaluation.md",
+        "recorded_at": "2026-08-19",
+        "recorded_under_prompt": "Please refund order ORD-1001 — it arrived damaged."
+    },
+    "steps": [
+        {
+            "tool_calls": [
+                {
+                    "id": "replay-refund-1",
+                    "name": "RefundOrderTool",
+                    "arguments": {"order_number": "ORD-1001", "reason": "Arrived damaged"}
+                }
+            ]
+        },
+        {
+            "text": "Your refund for order ORD-1001 has been completed — $100.00 will be returned to your original payment method. A human approved this refund before it executed, and the approval receipt was consumed exactly once."
+        }
+    ]
+}

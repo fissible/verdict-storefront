@@ -61,8 +61,12 @@ final class LookupCapability implements DefinesCapability
                     ->orders()
                     ->findOrFail($target->id),
             ))
-            ->executeUsing(fn (AuthorizedAction $action): array => self::disclose($action->target));
-
+            // A bound tool's result returns to the model as text, so the
+            // executor discloses JSON, not an array.
+            ->executeUsing(fn (AuthorizedAction $action): string => json_encode(
+                self::disclose($action->target),
+                JSON_THROW_ON_ERROR,
+            ));
     }
 
     /** @return array<string, mixed> */
