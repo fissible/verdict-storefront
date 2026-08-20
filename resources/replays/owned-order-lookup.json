@@ -1,8 +1,8 @@
 {
     "prompt": "Where is my order ORD-1001?",
     "provenance": {
-        "model": "authored captured proposal — no model produced this recording; live-model behavior is measured in fissible/verdict docs/evaluation.md",
-        "recorded_at": "2026-08-19",
+        "model": "huihui_ai/qwen2.5-abliterate:7b via ollama (local Ollama), recorded by demo:record-replays",
+        "recorded_at": "2026-08-20T04:55:27+00:00",
         "recorded_under_prompt": "Where is my order ORD-1001?"
     },
     "steps": [
@@ -11,12 +11,14 @@
                 {
                     "id": "replay-owned-lookup-1",
                     "name": "LookupOrderTool",
-                    "arguments": {"order_number": "ORD-1001"}
+                    "arguments": {
+                        "order_number": "ORD-1001"
+                    }
                 }
             ]
         },
         {
-            "text": "Order ORD-1001 was delivered on July 2nd. It contained a Ceramic Pour-Over Set and two Field Notebook 3-packs, totalling $100.00. The lookup ran through the authorization boundary and left a permit evidence row — is there anything else I can help with?"
+            "text": "Your order ORD-1001 has been delivered. It was placed on 2nd July 2026. The total amount for your purchase was $100.00. You bought one Ceramic Pour-Over Set and two Field Notebooks (3-pack). Is there anything else you need help with?"
         }
     ]
 }

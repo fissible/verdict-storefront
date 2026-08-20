@@ -35,8 +35,12 @@ final class ResumesApprovedConversations
         $participantType = $paused->participant_type;
         $customer = $participantType::query()->findOrFail($paused->participant_id);
 
+        // The model override must travel with the resume too: without it, a
+        // live-mode resume falls back to the provider's default model, which
+        // may not be the one the conversation ran on (found recording fixtures
+        // against local Ollama, where the fallback model wasn't installed).
         (new SupportAgent)
             ->continue($paused->conversation_id, $customer)
-            ->prompt(Decisions::from([$toolCallId => $decision]));
+            ->prompt(Decisions::from([$toolCallId => $decision]), model: config('demo.live_model'));
     }
 }

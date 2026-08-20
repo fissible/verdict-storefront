@@ -53,15 +53,29 @@ pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
 
+**2026-08-19 — #11 complete: fixtures are genuine model recordings.**
+- All five replay fixtures re-recorded from `huihui_ai/qwen2.5-abliterate:7b` on local Ollama
+  via the new committed `demo:record-replays` command (requires `DEMO_MODE=live`; validates
+  each capture against the demo's expected shape and retries — the RAG scenario took 4
+  sampled attempts; `--only=<file>` records one fixture). **Run this after every Verdict pin
+  bump** — it is the upgrade-fixture tool.
+- The RAG-borne scenario's prompt now carries the "retrieved" note inline (single
+  instruction), labeled as standing in for a RAG channel — the app has no retrieval tool and
+  faking one would misrepresent what is live.
+- Recording exposed and fixed a real live-mode bug: `ResumesApprovedConversations` (and the
+  command's own resume) must pass `model:` — without it a live resume falls back to the
+  provider's default model.
+- Brittle phrasing assertions relaxed (a real model's denial wording varies; evidence rows
+  are the assertions). Suite: 57 tests / 177 assertions on the recorded fixtures.
+
 **2026-08-19 — #10 complete: milestone shipped.**
 - README rewritten around the four walkthroughs, each naming the click, the expected reply,
   and the exact evidence row, with the mode-banner check up front. Scaffold status banner
   removed. Acceptance verified against a REAL fresh clone from GitHub (see verdict#237
   closing comment for the measured timing and the acceptance mapping).
-- All ten issues closed. Remaining known debts: delete
-  `App\Verdict\PreMigrationTolerantConfigurationStore` when verdict#240 ships; re-record
-  replay fixtures from a live model when one is run deliberately (provenance currently says
-  "authored captured proposal", which is honest but weaker than a real recording).
+- All ten issues closed. Remaining known debt: delete
+  `App\Verdict\PreMigrationTolerantConfigurationStore` when verdict#240 ships.
+  (~~Re-record fixtures from a live model~~ — done as #11, 2026-08-19.)
 - Next natural work (not scheduled): cut v0.1.0 via `bash release.sh`; hosted replay-mode
   demo idea is parked (owner said hold off — see 2026-08-19 conversation).
 
