@@ -45,13 +45,22 @@ Effort key: XS (<1h), S (1–2h), M (~half day), L (~1 day), XL (2–3 days).
 | [#6](https://github.com/fissible/verdict-storefront/issues/6) | Wave 4: support chat UI + mode banner | M | #4 | **Done** (2026-08-19) |
 | [#7](https://github.com/fissible/verdict-storefront/issues/7) | Wave 4: approval screen + exactly-once resume | M | #3, #4 | **Done** (2026-08-19) |
 | [#8](https://github.com/fissible/verdict-storefront/issues/8) | Wave 4: evidence browser (read-only) | M | #4 | **Done** (2026-08-19) |
-| [#9](https://github.com/fissible/verdict-storefront/issues/9) | Wave 4: "try to break it" page | M | #4, #6 | open |
+| [#9](https://github.com/fissible/verdict-storefront/issues/9) | Wave 4: "try to break it" page | M | #4, #6 | **Done** (2026-08-19) |
 | [#10](https://github.com/fissible/verdict-storefront/issues/10) | Wave 5: README walkthroughs + acceptance pass | M | #2–#9 | open |
 
 Within a wave, order by smallest-first; #2 before #3 (the owned-order lookup is the headline
 pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
+
+**2026-08-19 — #9 complete: the attack page is live.**
+- `/attack`: three scenarios from the shipped packs (cross-principal lookup, injected-argument
+  redirect, RAG-borne instruction), each with the injection prompt, a what-to-watch note, and a
+  one-click send through the ordinary chat path — no special handling, no forcing techniques.
+  Two new replay fixtures added (honest authored-captured-proposal provenance; the RAG one says
+  explicitly what it represents). In live mode the page carries the refusal-is-a-result note.
+- Both new attacks proven denied: no refund row, deny evidence for orders.refund.
+- **Next task: #10** — README walkthroughs + acceptance pass; closing it closes verdict#237.
 
 **2026-08-19 — #8 complete: evidence is visible without a database client.**
 - `/evidence` (any authenticated demo user): decision evidence (recorded_at, capability,

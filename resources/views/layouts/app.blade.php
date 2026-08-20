@@ -33,6 +33,7 @@
     @auth
         <span class="quiet">
             <a href="{{ route('chat') }}">chat</a> ·
+            <a href="{{ route('attack') }}">try to break it</a> ·
             <a href="{{ route('evidence') }}">evidence</a>
             @if (auth()->user()->is_reviewer) · <a href="{{ route('approvals') }}">approvals</a>@endif
             · {{ auth()->user()->name }}

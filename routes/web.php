@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\AttackPageController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DemoLoginController;
 use App\Http\Controllers\EvidenceBrowserController;
@@ -16,6 +17,7 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/chat', [ChatController::class, 'show'])->name('chat');
     Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
     Route::get('/evidence', EvidenceBrowserController::class)->name('evidence');
+    Route::get('/attack', AttackPageController::class)->name('attack');
 });
 
 require __DIR__.'/verdict-approval-flow.php';
