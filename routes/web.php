@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DemoLoginController;
+use App\Http\Controllers\EvidenceBrowserController;
 use Illuminate\Support\Facades\Route;
 
 // Named 'login' so the auth middleware sends guests here.
@@ -14,6 +15,7 @@ Route::post('/demo-login', DemoLoginController::class)->name('demo-login');
 Route::middleware('auth')->group(function (): void {
     Route::get('/chat', [ChatController::class, 'show'])->name('chat');
     Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
+    Route::get('/evidence', EvidenceBrowserController::class)->name('evidence');
 });
 
 require __DIR__.'/verdict-approval-flow.php';

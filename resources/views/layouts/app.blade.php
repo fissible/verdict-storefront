@@ -30,7 +30,14 @@
 <body>
 <header>
     <h1><a href="{{ url('/') }}" style="text-decoration:none">verdict-storefront</a></h1>
-    @auth<span class="quiet">signed in as {{ auth()->user()->name }}</span>@endauth
+    @auth
+        <span class="quiet">
+            <a href="{{ route('chat') }}">chat</a> ·
+            <a href="{{ route('evidence') }}">evidence</a>
+            @if (auth()->user()->is_reviewer) · <a href="{{ route('approvals') }}">approvals</a>@endif
+            · {{ auth()->user()->name }}
+        </span>
+    @endauth
 </header>
 
 {{-- The integrity rule (#237 design): replay is never presented as live. --}}

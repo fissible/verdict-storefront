@@ -44,7 +44,7 @@ Effort key: XS (<1h), S (1–2h), M (~half day), L (~1 day), XL (2–3 days).
 | [#5](https://github.com/fissible/verdict-storefront/issues/5) | Wave 3: live mode opt-in (`DEMO_MODE=live`) | S | #4 | **Done** (2026-08-19) |
 | [#6](https://github.com/fissible/verdict-storefront/issues/6) | Wave 4: support chat UI + mode banner | M | #4 | **Done** (2026-08-19) |
 | [#7](https://github.com/fissible/verdict-storefront/issues/7) | Wave 4: approval screen + exactly-once resume | M | #3, #4 | **Done** (2026-08-19) |
-| [#8](https://github.com/fissible/verdict-storefront/issues/8) | Wave 4: evidence browser (read-only) | M | #4 | open |
+| [#8](https://github.com/fissible/verdict-storefront/issues/8) | Wave 4: evidence browser (read-only) | M | #4 | **Done** (2026-08-19) |
 | [#9](https://github.com/fissible/verdict-storefront/issues/9) | Wave 4: "try to break it" page | M | #4, #6 | open |
 | [#10](https://github.com/fissible/verdict-storefront/issues/10) | Wave 5: README walkthroughs + acceptance pass | M | #2–#9 | open |
 
@@ -52,6 +52,13 @@ Within a wave, order by smallest-first; #2 before #3 (the owned-order lookup is 
 pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
+
+**2026-08-19 — #8 complete: evidence is visible without a database client.**
+- `/evidence` (any authenticated demo user): decision evidence (recorded_at, capability,
+  stage + approval phase, disposition, reason, target strategy + identity match), approval
+  receipts (status/consumed, decided by), and provenance derivations. Read-only by
+  construction — no mutating routes exist. Nav links added to the layout.
+- **Next task: #9** (try-to-break page), then #10 closes the milestone.
 
 **2026-08-19 — #7 complete: the approval round-trip is clickable.**
 - Built from the `verdict:make-approval-flow` skeletons with every TODO answered: reviewer
