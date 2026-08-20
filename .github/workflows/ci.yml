@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # The job IS the acceptance criterion: fresh clone → running app with PHP and
+  # Composer only, following the exact commands the README gives a reader.
+  clone-and-run:
+    runs-on: ubuntu-latest
+    name: Clone-and-run path (PHP ${{ matrix.php }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, fileinfo, sqlite, pdo_sqlite, bcmath, intl, sodium
+          tools: composer:v2
+          coverage: none
+
+      - name: Install dependencies (locked)
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Setup (the README path)
+        run: composer run setup
+
+      - name: Verdict wiring audit must be advisory-free
+        run: |
+          php artisan verdict:validate
+          php artisan verdict:validate 2>&1 | grep -qi "WARN" && exit 1 || true
+
+      - name: Linter
+        run: vendor/bin/pint --test
+
+      - name: Test suite
+        run: php artisan test
