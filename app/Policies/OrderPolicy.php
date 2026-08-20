@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -22,5 +23,16 @@ final class OrderPolicy
         return $customer->id === $order->user_id
             ? Response::allow('Customer owns this order.')
             : Response::deny('Order belongs to another customer.');
+    }
+
+    public function refund(User $customer, Order $order): Response
+    {
+        if ($customer->id !== $order->user_id) {
+            return Response::deny('Order belongs to another customer.');
+        }
+
+        return $order->status === OrderStatus::Delivered
+            ? Response::allow('Customer owns a delivered order.')
+            : Response::deny('Only delivered orders may be refunded.');
     }
 }

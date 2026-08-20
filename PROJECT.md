@@ -39,7 +39,7 @@ Effort key: XS (<1h), S (1–2h), M (~half day), L (~1 day), XL (2–3 days).
 | — | Wave 0: scaffold, CI, org wiring | M | v0.8.0 tag ✅ | **Done** (2026-08-19) |
 | [#1](https://github.com/fissible/verdict-storefront/issues/1) | Wave 1: storefront domain + synthetic seed data | M | none | **Done** (2026-08-19) |
 | [#2](https://github.com/fissible/verdict-storefront/issues/2) | Wave 2: context-resolved owned-order lookup capability | M | #1 | **Done** (2026-08-19) |
-| [#3](https://github.com/fissible/verdict-storefront/issues/3) | Wave 2: confirmation-gated refund/cancel capability | M | #1 | open |
+| [#3](https://github.com/fissible/verdict-storefront/issues/3) | Wave 2: confirmation-gated refund/cancel capability | M | #1 | **Done** (2026-08-19) |
 | [#4](https://github.com/fissible/verdict-storefront/issues/4) | Wave 3: agent + ReplayGateway (replay default) | L | #2, #3 | open |
 | [#5](https://github.com/fissible/verdict-storefront/issues/5) | Wave 3: live mode opt-in (`DEMO_MODE=live`) | S | #4 | open |
 | [#6](https://github.com/fissible/verdict-storefront/issues/6) | Wave 4: support chat UI + mode banner | M | #4 | open |
@@ -52,6 +52,22 @@ Within a wave, order by smallest-first; #2 before #3 (the owned-order lookup is 
 pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
+
+**2026-08-19 — #3 complete (wave 2 done).**
+- `orders.refund` shipped TDD as generator output filled in: scoped resolver (same #192
+  discipline as lookup), `requiresConfirmation` binding customer/order/status/amount/reason,
+  `ExecutionTargetPolicy::refresh`, `atMostOnce` claim, executor creates the Refund row and
+  marks the order Refunded. `OrderPolicy::refund` allows owner + delivered only.
+- The pause → approve → exactly-once round-trip is proven at capability level: the resume must
+  run inside `ApprovalManager::withinApprovedToolCalls()` with the human's per-call
+  `Decision::approve()` — a receipt alone never executes. #7's approval screen builds on this.
+- `AppServiceProvider` registers the approver-route `ReleasePolicy`
+  (`ApproverAudience::source() → destination()`, Internal data, any trust) — without it,
+  `verdict:validate` advises that approvers see no provenance.
+- Test-suite gotcha: `RefreshDatabase`'s wrapping transaction trips Verdict's
+  `UnsafeOuterTransaction` guard on receipt mutations — approval tests use
+  `DatabaseMigrations`. Filed upstream as a docs/testing.md gap.
+- **Next task: #4** (agent + ReplayGateway, replay default) — the wave-3 keystone.
 
 **2026-08-19 — #2 complete; upstream bug verdict#240 found and worked around.**
 - `orders.lookup` shipped TDD as `verdict:make-capability` output filled in:
