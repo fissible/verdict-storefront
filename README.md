@@ -47,11 +47,32 @@ Four walkthroughs, each ending at a visible evidence row:
   configuration — an Anthropic key, or local Ollama with a tools-capable model.
 
 Replay is never presented as live: every page carries a mode banner, and replay
-fixtures carry provenance (which model produced the recorded proposal, when, and
+fixtures carry provenance (what produced the recorded proposal, when, and
 under what prompt). This app demonstrates **Verdict's boundary and its evidence**,
 not model susceptibility — susceptibility numbers live in Verdict's
 [docs/evaluation.md](https://github.com/fissible/verdict/blob/main/docs/evaluation.md)
 and are not restated here.
+
+### Running live
+
+```bash
+# Anthropic (Laravel AI's default hosted provider)
+DEMO_MODE=live AI_PROVIDER=anthropic ANTHROPIC_API_KEY=sk-ant-... php artisan serve
+
+# Local Ollama — the model must report the `tools` capability
+DEMO_MODE=live AI_PROVIDER=ollama DEMO_MODEL=qwen2.5:7b php artisan serve
+```
+
+The provider wiring is ordinary laravel/ai configuration (`config/ai.php`) — the
+replay gateway is simply not installed when `DEMO_MODE=live`. Two caveats, both
+inherited from Verdict's evaluation notes:
+
+- **Ollama models must report the `tools` capability.** `gemma3:4b` reports only
+  `completion` and will never call a tool; `gpt-oss:20b` reports `tools` and works.
+- **An aligned model may refuse the bait on the "try to break it" page.** That
+  refusal is a result, not a malfunction: it measures the model's alignment, while
+  Verdict's denial is deterministic policy. This app uses no forcing techniques
+  (no `tool_choice`, no prefill, no comply-instructions) in either mode.
 
 ## Versioning
 

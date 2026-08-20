@@ -41,7 +41,7 @@ Effort key: XS (<1h), S (1–2h), M (~half day), L (~1 day), XL (2–3 days).
 | [#2](https://github.com/fissible/verdict-storefront/issues/2) | Wave 2: context-resolved owned-order lookup capability | M | #1 | **Done** (2026-08-19) |
 | [#3](https://github.com/fissible/verdict-storefront/issues/3) | Wave 2: confirmation-gated refund/cancel capability | M | #1 | **Done** (2026-08-19) |
 | [#4](https://github.com/fissible/verdict-storefront/issues/4) | Wave 3: agent + ReplayGateway (replay default) | L | #2, #3 | **Done** (2026-08-19) |
-| [#5](https://github.com/fissible/verdict-storefront/issues/5) | Wave 3: live mode opt-in (`DEMO_MODE=live`) | S | #4 | open |
+| [#5](https://github.com/fissible/verdict-storefront/issues/5) | Wave 3: live mode opt-in (`DEMO_MODE=live`) | S | #4 | **Done** (2026-08-19) |
 | [#6](https://github.com/fissible/verdict-storefront/issues/6) | Wave 4: support chat UI + mode banner | M | #4 | open |
 | [#7](https://github.com/fissible/verdict-storefront/issues/7) | Wave 4: approval screen + exactly-once resume | M | #3, #4 | open |
 | [#8](https://github.com/fissible/verdict-storefront/issues/8) | Wave 4: evidence browser (read-only) | M | #4 | open |
@@ -52,6 +52,18 @@ Within a wave, order by smallest-first; #2 before #3 (the owned-order lookup is 
 pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
+
+**2026-08-19 — #5 complete; live mode VALIDATED against a real model.**
+- `DEMO_MODE=live` routes to real providers (the replay gateway binds only in replay mode —
+  landed with #4). README documents both live paths (Anthropic key; Ollama with a
+  tools-capable model), the gemma3:4b `completion`-only caveat, the refusal-is-a-result note,
+  and the no-forcing-techniques guarantee. `config('demo.live_model')` / `DEMO_MODEL` is the
+  live model knob (required for Ollama) — #6's controller should pass it to `prompt(model: ...)`.
+- **Validated live against local Ollama** (`huihui_ai/qwen2.5-abliterate:7b`): owned lookup →
+  real tool call through Verdict, permit evidence, answer composed from the real disclosure;
+  cross-principal lookup → Verdict deny evidence row, model relayed the failure. Live mode is
+  not CI-testable (no model on runners) — this manual validation is the record.
+- **Next task: #6** (chat UI + mode banner).
 
 **2026-08-19 — #4 complete: the replay pipeline runs end-to-end.**
 - `SupportAgent` (conversational — required: laravel/ai throws ApprovalNotResumableException

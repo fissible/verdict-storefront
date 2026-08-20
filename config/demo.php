@@ -25,4 +25,19 @@ return [
 
     'mode' => env('DEMO_MODE', 'replay'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Live-mode model
+    |--------------------------------------------------------------------------
+    |
+    | Only consulted in live mode. Null lets the provider use its own default
+    | model (hosted providers ship one); Ollama has no sensible default, so
+    | name a tools-capable model, e.g. DEMO_MODEL=qwen2.5:7b. gemma3:4b reports
+    | only `completion` and will never call a tool — see fissible/verdict
+    | docs/evaluation.md.
+    |
+    */
+
+    'live_model' => env('DEMO_MODEL'),
+
 ];
