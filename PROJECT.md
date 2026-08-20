@@ -46,12 +46,24 @@ Effort key: XS (<1h), S (1–2h), M (~half day), L (~1 day), XL (2–3 days).
 | [#7](https://github.com/fissible/verdict-storefront/issues/7) | Wave 4: approval screen + exactly-once resume | M | #3, #4 | **Done** (2026-08-19) |
 | [#8](https://github.com/fissible/verdict-storefront/issues/8) | Wave 4: evidence browser (read-only) | M | #4 | **Done** (2026-08-19) |
 | [#9](https://github.com/fissible/verdict-storefront/issues/9) | Wave 4: "try to break it" page | M | #4, #6 | **Done** (2026-08-19) |
-| [#10](https://github.com/fissible/verdict-storefront/issues/10) | Wave 5: README walkthroughs + acceptance pass | M | #2–#9 | open |
+| [#10](https://github.com/fissible/verdict-storefront/issues/10) | Wave 5: README walkthroughs + acceptance pass | M | #2–#9 | **Done** (2026-08-19) |
 
 Within a wave, order by smallest-first; #2 before #3 (the owned-order lookup is the headline
 pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
+
+**2026-08-19 — #10 complete: milestone shipped.**
+- README rewritten around the four walkthroughs, each naming the click, the expected reply,
+  and the exact evidence row, with the mode-banner check up front. Scaffold status banner
+  removed. Acceptance verified against a REAL fresh clone from GitHub (see verdict#237
+  closing comment for the measured timing and the acceptance mapping).
+- All ten issues closed. Remaining known debts: delete
+  `App\Verdict\PreMigrationTolerantConfigurationStore` when verdict#240 ships; re-record
+  replay fixtures from a live model when one is run deliberately (provenance currently says
+  "authored captured proposal", which is honest but weaker than a real recording).
+- Next natural work (not scheduled): cut v0.1.0 via `bash release.sh`; hosted replay-mode
+  demo idea is parked (owner said hold off — see 2026-08-19 conversation).
 
 **2026-08-19 — #9 complete: the attack page is live.**
 - `/attack`: three scenarios from the shipped packs (cross-principal lookup, injected-argument

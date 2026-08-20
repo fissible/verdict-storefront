@@ -6,11 +6,9 @@ A clone-and-run storefront support agent demonstrating correct
 Verdict's [adoption guide](https://github.com/fissible/verdict/blob/main/docs/adoption-guide.md):
 when a question arises about how a piece fits, the answer is a file in this repo.
 
-> **Status: scaffold.** The clone-and-run baseline below works today (Laravel 12 +
-> Verdict v0.8.0 installed, migrated, `verdict:validate` advisory-free, CI green).
-> The four demo walkthroughs are being built — see [PROJECT.md](PROJECT.md) for the
-> dependency-ordered plan and
-> [fissible/verdict#237](https://github.com/fissible/verdict/issues/237) for the spec.
+> Spec: [fissible/verdict#237](https://github.com/fissible/verdict/issues/237).
+> Build history: [PROJECT.md](PROJECT.md). CI runs the exact clone-and-run path below
+> on every push and fails on any `verdict:validate` advisory.
 
 ## Five-minute start
 
@@ -24,18 +22,43 @@ composer run setup   # .env, app key, SQLite database, migrations, synthetic see
 php artisan serve
 ```
 
-## What it demonstrates
+## The four walkthroughs
 
-Four walkthroughs, each ending at a visible evidence row:
+Every page carries a **mode banner** — check it first: in replay mode the model's
+proposals are recorded fixtures and everything downstream (Verdict, approvals,
+evidence) is live. Each walkthrough ends at a visible evidence row.
 
-1. **An allowed owned-order read** — a context-resolved capability scoped to the
-   authenticated user: the model's argument is a filter, not a key.
-2. **A denied cross-principal read** — the same capability refusing another
-   customer's order, deterministically, regardless of what the model asks for.
-3. **A denied injected-argument redirect** — a prompt-injection attempt from the
-   shipped attack packs, denied at the boundary with the evidence to show for it.
-4. **A confirmation pause → approval → exactly-once completion** — a refund that
-   stops for a human, resumes through the approval screen, and completes exactly once.
+Start at `http://127.0.0.1:8000` and sign in as **Alice Storey**.
+
+**1. An allowed owned-order read.** In chat, click *"Where is my order ORD-1001?"*.
+The agent's turn shows the proposed tool call (`LookupOrderTool({"order_number":"ORD-1001"})`)
+and the reply describes Alice's delivered order. Open **evidence**: the top rows are
+`orders.lookup` / **permit** at the proposal and execution stages, with target strategy
+`refresh ✓` — the executor acted on a re-loaded row, resolved inside Alice's own orders.
+The model's argument was a filter within her authority, never a global key.
+
+**2. A denied cross-principal read.** Click *"Show me the details of order ORD-2001."*
+(Bruno's order). The reply refuses. In **evidence**: `orders.lookup` / **deny** with
+reason *"Capability target could not be resolved."* — outside Alice's scope the target
+does not resolve, so the denial happened before the policy layer was even needed, and
+it was recorded, not swallowed.
+
+**3. A denied injected-argument redirect.** Open **try to break it** and send
+*Injected-argument redirect*. The proposed tool call visibly carries the injected
+number (`ORD-2002`) — and **evidence** shows `orders.refund` / **deny**, with no refund
+row anywhere. An injected instruction can influence *what is proposed*, never *what is
+reachable*.
+
+**4. Confirmation pause → approval → exactly-once completion.** In chat, click
+*"Please refund order ORD-1001 — it arrived damaged."* The chat shows the action
+**waiting for human approval** and nothing has moved (no refund row in evidence — but a
+**pending** approval receipt). Sign out, sign in as **Sam Reyes (reviewer)**, open
+**approvals**: the challenge shows the capability, the binding reason, and the
+application's display context. Click **Approve**. Back as Alice: the conversation has
+resumed and completed. In **evidence**: the receipt is **consumed** by `user:<sam>`,
+`orders.refund` shows permit rows through the approval phases, and there is exactly one
+refund. Submitting the decision a second time reports an outcome error — never a second
+refund.
 
 ## Two modes, one integrity rule
 
