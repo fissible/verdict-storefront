@@ -37,7 +37,7 @@ Effort key: XS (<1h), S (1–2h), M (~half day), L (~1 day), XL (2–3 days).
 | # | Task | Effort | Deps | Status |
 |---|---|---|---|---|
 | — | Wave 0: scaffold, CI, org wiring | M | v0.8.0 tag ✅ | **Done** (2026-08-19) |
-| [#1](https://github.com/fissible/verdict-storefront/issues/1) | Wave 1: storefront domain + synthetic seed data | M | none | open |
+| [#1](https://github.com/fissible/verdict-storefront/issues/1) | Wave 1: storefront domain + synthetic seed data | M | none | **Done** (2026-08-19) |
 | [#2](https://github.com/fissible/verdict-storefront/issues/2) | Wave 2: context-resolved owned-order lookup capability | M | #1 | open |
 | [#3](https://github.com/fissible/verdict-storefront/issues/3) | Wave 2: confirmation-gated refund/cancel capability | M | #1 | open |
 | [#4](https://github.com/fissible/verdict-storefront/issues/4) | Wave 3: agent + ReplayGateway (replay default) | L | #2, #3 | open |
@@ -52,6 +52,17 @@ Within a wave, order by smallest-first; #2 before #3 (the owned-order lookup is 
 pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
+
+**2026-08-19 — Wave 1 (#1) complete.**
+- Domain shipped TDD: `Product`, `Order` (+`OrderStatus` enum), `OrderItem`, `Refund`, one
+  migration, factories, deterministic idempotent `DatabaseSeeder` (13 tests, 33 assertions).
+- Fixed identifiers the walkthroughs and replay fixtures reference: customers
+  `alice@example.com` (Alice Storey — the authenticated demo user) and `bruno@example.com`
+  (Bruno Marchetti — the cross-principal target); Alice owns ORD-1001 (delivered), ORD-1002
+  (shipped), ORD-1003 (paid); Bruno owns ORD-2001 (delivered), ORD-2002 (paid). Refunds are
+  never seeded — they exist only as the confirmation-gated capability's outcome.
+- **Next task: #2** (context-resolved owned-order lookup capability). Shape it as
+  `verdict:make-capability` output; ORD-2001 is the denied cross-principal read's target.
 
 **2026-08-19 — Wave 0 complete.**
 - Repo created (public), scaffold pushed: Laravel 12, `fissible/verdict:^0.8.0` (resolved v0.8.0,
