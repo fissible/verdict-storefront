@@ -6,22 +6,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
-
-## [Unreleased]
-
-### Changed
-- Bump `fissible/verdict` to `^0.9.2` (from `^0.8.0`, also pulling `laravel/ai` v0.11) — the first
-  upstream bump this app absorbs, and one that breaks it by design: verdict v0.9.1 changed
-  `CapabilityConfigurationStore::record()` from `void` to `bool`, making the #240 workaround store
-  unrepresentable. Absorbing the bump also did the fixture's job a third time: the fresh-clone
-  gauntlet caught verdict#256 (the upstream guard died when the SQLite file itself did not exist
-  yet), fixed in verdict v0.9.2, which this constraint targets.
-
-### Removed
-- `App\Verdict\PreMigrationTolerantConfigurationStore`, its test, and the config override — back to
-  the stock `capability_configurations.store => null` default. The fresh-clone path
-  (`composer install` -> `composer run setup` -> `verdict:validate`) is verified clean against
-  v0.9.2 with the configuration audit rows recorded on the first post-migration boot. (#12)
 ## [0.2.0] - 2026-08-20
 
 ### Added
