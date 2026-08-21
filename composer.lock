@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11ce6069aa381bb5171500b59a126db2",
+    "content-hash": "bd1056fcd7315459a52792da43dab564",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.393.2",
+            "version": "3.393.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "0a46ff5138d21adbb312729f564a1c14f54909c9"
+                "reference": "ef4cc0f93006e68f5ece1c5afb02c1bac527b6ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0a46ff5138d21adbb312729f564a1c14f54909c9",
-                "reference": "0a46ff5138d21adbb312729f564a1c14f54909c9",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ef4cc0f93006e68f5ece1c5afb02c1bac527b6ad",
+                "reference": "ef4cc0f93006e68f5ece1c5afb02c1bac527b6ad",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.393.2"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.393.3"
             },
-            "time": "2026-08-19T18:38:54+00:00"
+            "time": "2026-08-20T18:21:31+00:00"
         },
         {
             "name": "brick/math",
@@ -661,16 +661,16 @@
         },
         {
             "name": "fissible/verdict",
-            "version": "v0.8.0",
+            "version": "v0.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fissible/verdict.git",
-                "reference": "75a2fc53ce6ef0f2248a34446c13d44b806df52a"
+                "reference": "25fb852da9c859f8a728801c4bbb32172a189210"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fissible/verdict/zipball/75a2fc53ce6ef0f2248a34446c13d44b806df52a",
-                "reference": "75a2fc53ce6ef0f2248a34446c13d44b806df52a",
+                "url": "https://api.github.com/repos/fissible/verdict/zipball/25fb852da9c859f8a728801c4bbb32172a189210",
+                "reference": "25fb852da9c859f8a728801c4bbb32172a189210",
                 "shasum": ""
             },
             "require": {
@@ -679,7 +679,7 @@
                 "illuminate/database": "^12.0||^13.0",
                 "illuminate/filesystem": "^12.0||^13.0",
                 "illuminate/support": "^12.0||^13.0",
-                "laravel/ai": "^0.10.2",
+                "laravel/ai": "^0.11.0",
                 "php": "^8.3"
             },
             "require-dev": {
@@ -742,9 +742,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fissible/verdict/issues",
-                "source": "https://github.com/fissible/verdict/tree/v0.8.0"
+                "source": "https://github.com/fissible/verdict/tree/v0.9.2"
             },
-            "time": "2026-08-20T00:46:29+00:00"
+            "time": "2026-08-21T04:40:06+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -1298,16 +1298,16 @@
         },
         {
             "name": "laravel/ai",
-            "version": "v0.10.3",
+            "version": "v0.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/ai.git",
-                "reference": "c3848aae389f45c605eefb0dda5bd5fa7df76eaa"
+                "reference": "dd08142f0c4dc4d5544521ce3fc4a1b9c2fe748c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/ai/zipball/c3848aae389f45c605eefb0dda5bd5fa7df76eaa",
-                "reference": "c3848aae389f45c605eefb0dda5bd5fa7df76eaa",
+                "url": "https://api.github.com/repos/laravel/ai/zipball/dd08142f0c4dc4d5544521ce3fc4a1b9c2fe748c",
+                "reference": "dd08142f0c4dc4d5544521ce3fc4a1b9c2fe748c",
                 "shasum": ""
             },
             "require": {
@@ -1370,7 +1370,7 @@
                 "issues": "https://github.com/laravel/ai/issues",
                 "source": "https://github.com/laravel/ai"
             },
-            "time": "2026-08-06T13:39:04+00:00"
+            "time": "2026-08-19T03:03:13+00:00"
         },
         {
             "name": "laravel/framework",
