@@ -47,11 +47,25 @@ Effort key: XS (<1h), S (1–2h), M (~half day), L (~1 day), XL (2–3 days).
 | [#8](https://github.com/fissible/verdict-storefront/issues/8) | Wave 4: evidence browser (read-only) | M | #4 | **Done** (2026-08-19) |
 | [#9](https://github.com/fissible/verdict-storefront/issues/9) | Wave 4: "try to break it" page | M | #4, #6 | **Done** (2026-08-19) |
 | [#10](https://github.com/fissible/verdict-storefront/issues/10) | Wave 5: README walkthroughs + acceptance pass | M | #2–#9 | **Done** (2026-08-19) |
+| [#13](https://github.com/fissible/verdict-storefront/issues/13) | Scope-as-target order search (verdict#251): `orders.search`, fixture, attack scenario, walkthrough 5 | M | #2, #9 | **Done** (2026-08-22) |
 
 Within a wave, order by smallest-first; #2 before #3 (the owned-order lookup is the headline
 pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
+
+**2026-08-22 — #13 complete: the set-returning pattern beside the record-keyed one.**
+- `orders.search` mirrors the verdict workbench's scope-as-target wiring (#251) on the primitives
+  already in v0.9.2 (`usingPolicyForContextTarget`, `ExecutionTargetPolicy::refresh`) — no pin
+  bump needed. `App\Verdict\OrderSearchScope` + `OrderSearchScopePolicy` (registered by hand in
+  AppServiceProvider; not a model, so no auto-discovery). Filters narrow only; LIKE escaped.
+- Fixture `cross-principal-order-search.json` recorded from `huihui_ai/qwen2.5-abliterate:7b`
+  on attempt 1. The model searched by product and misattributed Alice's ORD-1002 to Bruno in
+  prose — kept as-is; the README names it as confabulation over released data only.
+- Attack page now has four scenarios; README has five walkthroughs. Suite: 63 tests.
+- Next: when verdict v0.10.0 is tagged, bump the pin and run `demo:record-replays` (all six).
+- Housekeeping noticed: the v0.2.1 release's CHANGELOG section is empty/missing — git-cliff
+  filters `chore:` commits and that release had only a `docs:` commit.
 
 **2026-08-19 — #11 complete: fixtures are genuine model recordings.**
 - All five replay fixtures re-recorded from `huihui_ai/qwen2.5-abliterate:7b` on local Ollama

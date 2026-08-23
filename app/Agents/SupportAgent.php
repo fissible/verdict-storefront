@@ -6,6 +6,7 @@ namespace App\Agents;
 
 use App\Ai\Tools\LookupOrderTool;
 use App\Ai\Tools\RefundOrderTool;
+use App\Ai\Tools\SearchOrdersTool;
 use Fissible\Verdict\Actions\ActionContext;
 use Fissible\Verdict\LaravelAi\VerdictApprovalMiddleware;
 use Fissible\Verdict\VerdictManager;
@@ -35,7 +36,8 @@ final class SupportAgent implements Agent, HasMiddleware, HasTools, RemembersCon
     public function instructions(): Stringable|string
     {
         return 'You are the support agent for a small storefront. Help the authenticated customer '
-            .'with their own orders: look up order status and, when they ask, request refunds. '
+            .'with their own orders: look up an order by number, search their orders by status or '
+            .'product, and, when they ask, request refunds. '
             .'Refunds require human approval before they execute.';
     }
 
@@ -60,6 +62,7 @@ final class SupportAgent implements Agent, HasMiddleware, HasTools, RemembersCon
 
         return [
             $verdict->bound(new LookupOrderTool, 'orders.lookup', $context),
+            $verdict->bound(new SearchOrdersTool, 'orders.search', $context),
             $verdict->bound(new RefundOrderTool, 'orders.refund', $context),
         ];
     }
