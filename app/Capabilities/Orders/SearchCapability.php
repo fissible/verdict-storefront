@@ -76,15 +76,26 @@ final class SearchCapability implements DefinesCapability
     {
         $query = $scope->constrain(Order::query())->with('items.product')->orderByDesc('placed_at');
 
-        $status = OrderStatus::tryFrom(strtolower((string) ($filters['status'] ?? '')));
-        if ($status !== null) {
+        $rawStatus = strtolower(trim((string) ($filters['status'] ?? '')));
+        if ($rawStatus !== '') {
+            $status = OrderStatus::tryFrom($rawStatus);
+
+            // An unrecognised status is a filter nothing satisfies — never a
+            // filter silently dropped, which would widen the result set.
+            if ($status === null) {
+                return [];
+            }
+
             $query->where('status', $status);
         }
 
         $product = trim((string) ($filters['product'] ?? ''));
         if ($product !== '') {
-            $escaped = addcslashes($product, '%_\\');
-            $query->whereHas('items.product', fn (Builder $q) => $q->where('name', 'like', "%{$escaped}%"));
+            // An explicit ESCAPE clause with a non-backslash escape character:
+            // portable across SQLite, MySQL, and PostgreSQL (whose default
+            // escape handling differs), so %, _ and \ in the term match literally.
+            $escaped = str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $product);
+            $query->whereHas('items.product', fn (Builder $q) => $q->whereRaw('name like ? escape ?', ["%{$escaped}%", '!']));
         }
 
         return $query->get()->map(fn (Order $order): array => [

@@ -75,8 +75,33 @@ final class SearchCapabilityTest extends TestCase
         $this->assertEqualsCanonicalizing(['ORD-1002', 'ORD-1003'], $search([]));
         $this->assertSame(['ORD-1003'], $search(['status' => 'PAID']));
         $this->assertSame(['ORD-1002'], $search(['product' => 'lamp']));
-        $this->assertSame([], $search(['product' => '%']), 'A supplied wildcard is a literal, not a widening.');
         $this->assertSame([], $search(['status' => 'shipped', 'product' => 'Mug']));
+        $this->assertSame([], $search(['status' => 'cancelled']), 'A valid status no order has matches nothing.');
+        $this->assertSame([], $search(['status' => 'returned']), 'An unrecognised status is a zero-result filter, not a dropped one.');
+    }
+
+    public function test_wildcards_in_the_product_term_match_literally(): void
+    {
+        $alice = User::factory()->create();
+        $plain = Product::factory()->create(['name' => 'Aurora Desk Lamp']);
+        $odd = Product::factory()->create(['name' => '100% Wool_Beanie \\ Winter!']);
+        $this->orderWith($alice, 'ORD-1002', $plain);
+        $this->orderWith($alice, 'ORD-1004', $odd);
+
+        $search = fn (string $product): array => array_column(
+            json_decode((string) app(VerdictManager::class)->runBound($this->searchEnvelope($alice, ['product' => $product]))->output, true, flags: JSON_THROW_ON_ERROR),
+            'number',
+        );
+
+        // A bare wildcard would otherwise match every order; literally, it
+        // matches only the product that actually contains the character.
+        $this->assertSame(['ORD-1004'], $search('%'));
+        $this->assertSame(['ORD-1004'], $search('_'));
+        $this->assertSame([], $search('Desk_Lamp'), '_ is not a single-character wildcard.');
+        $this->assertSame(['ORD-1004'], $search('100%'));
+        $this->assertSame(['ORD-1004'], $search('Wool_Beanie'));
+        $this->assertSame(['ORD-1004'], $search('\\'));
+        $this->assertSame(['ORD-1004'], $search('!'), 'The escape character itself is searchable.');
     }
 
     public function test_the_scope_is_unresolvable_without_an_authenticated_customer(): void
