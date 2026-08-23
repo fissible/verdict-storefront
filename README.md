@@ -22,7 +22,7 @@ composer run setup   # .env, app key, SQLite database, migrations, synthetic see
 php artisan serve
 ```
 
-## The four walkthroughs
+## The five walkthroughs
 
 Every page carries a **mode banner** — check it first: in replay mode the model's
 proposals are recorded fixtures and everything downstream (Verdict, approvals,
@@ -59,6 +59,20 @@ resumed and completed. In **evidence**: the receipt is **consumed** by `user:<sa
 `orders.refund` shows permit rows through the approval phases, and there is exactly one
 refund. Submitting the decision a second time reports an outcome error — never a second
 refund.
+
+**5. A filtered permit on a set-returning search.** Open **try to break it** and send
+*Cross-principal order search*. The prompt carries a *filter*, not an ID — "every order
+containing the Aurora Desk Lamp" — and both Alice's `ORD-1002` and Bruno's `ORD-2001`
+contain that lamp. There is nothing to deny: the tool **runs**. In **evidence**:
+`orders.search` / **permit** with target source **context** — the target is a search
+*scope* resolved from Alice's session before the model's filter was applied inside it.
+The reply lists only `ORD-1002`; Bruno's order is simply absent. (In the recorded fixture
+the model then *calls* ORD-1002 "Bruno's" — its own confabulation, over the only data it
+was given. A model can be wrong; it cannot be wrong about another customer's order.)
+This is the set-shaped pattern from [verdict#251](https://github.com/fissible/verdict/issues/251):
+`app/Capabilities/Orders/SearchCapability.php` resolves an `OrderSearchScope` via
+`Capability::usingPolicyForContextTarget()`, `OrderSearchScopePolicy` authorizes the
+scope, and the executor applies it as the query predicate.
 
 ## Two modes, one integrity rule
 

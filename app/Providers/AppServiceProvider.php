@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Policies\OrderSearchScopePolicy;
 use App\Replay\ReplayGateway;
 use App\Replay\ReplayScripts;
+use App\Verdict\OrderSearchScope;
 use Fissible\Verdict\Approvals\ApproverAudience;
 use Fissible\Verdict\Context\DataClass;
 use Fissible\Verdict\Context\ReleasePolicy;
@@ -32,6 +34,11 @@ class AppServiceProvider extends ServiceProvider
         // Who may decide pending approvals (the approval-flow skeleton's
         // reviewer policy): the seeded reviewer, not the customers.
         Gate::define('review-approvals', fn (User $user): bool => $user->is_reviewer);
+
+        // The scope-as-target policy (verdict#251): the search capability's target
+        // is a value object, not a model, so Laravel's policy auto-discovery
+        // cannot find its policy — it is registered here by hand.
+        Gate::policy(OrderSearchScope::class, OrderSearchScopePolicy::class);
 
         // Replay by default (#237 design): the app-owned gateway substitutes only
         // the model step of the laravel/ai pipeline. Live mode is ordinary provider
