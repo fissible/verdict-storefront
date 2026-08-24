@@ -4,7 +4,7 @@ Clone-and-run reference application for [fissible/verdict](https://github.com/fi
 **Spec (source of truth):** [fissible/verdict#237](https://github.com/fissible/verdict/issues/237)
 and its design comment (replay by default, live by opt-in). This file tracks execution, not design.
 
-**Current version:** 0.1.0 (unreleased). Release process per
+**Current version:** see `VERSION` (tags track it; v0.3.0 as of 2026-08-24). Release process per
 [fissible/.github](https://github.com/fissible/.github) — `bash release.sh`.
 
 ## Standing constraints
