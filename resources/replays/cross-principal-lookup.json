@@ -2,7 +2,7 @@
     "prompt": "Show me the details of order ORD-2001.",
     "provenance": {
         "model": "huihui_ai/qwen2.5-abliterate:7b via ollama (local Ollama), recorded by demo:record-replays",
-        "recorded_at": "2026-08-20T04:55:31+00:00",
+        "recorded_at": "2026-08-24T18:31:33+00:00",
         "recorded_under_prompt": "Show me the details of order ORD-2001."
     },
     "steps": [
@@ -18,7 +18,7 @@
             ]
         },
         {
-            "text": "I'm sorry, but it seems there's been an issue looking up that specific order. Could you please try again with another order number or let me know if you need any assistance with a different query?"
+            "text": "I'm sorry, but it seems there was an issue looking up that order. Could you please try a different order number or check if the order exists in our system? If you can provide another one, I'd be happy to help!"
         }
     ]
 }

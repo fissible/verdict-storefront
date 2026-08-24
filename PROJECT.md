@@ -54,6 +54,17 @@ pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
 
+**2026-08-24 — verdict v0.10.0 pin bump absorbed clean (#15).**
+- `fissible/verdict ^0.10.0` (resolved v0.10.0; laravel/ai stays v0.11.0). No code changes
+  needed — v0.10.0's consumer-visible additions (`DeclaresExpressibleToolShapes`,
+  `ExecutionWindow`, lazy window resolution) don't touch this app's surface; the suite passed
+  before any edit.
+- All six fixtures re-recorded per the upgrade-fixture duty (`demo:record-replays`,
+  `huihui_ai/qwen2.5-abliterate:7b`, every scenario on attempt 1). Suite 64 tests / 204
+  assertions on the new recordings; `verdict:validate` advisory-free; pint clean.
+- Next natural work (not scheduled): cut a release (`bash release.sh` — minor: two feats since
+  v0.2.1).
+
 **2026-08-22 — #13 complete: the set-returning pattern beside the record-keyed one.**
 - `orders.search` mirrors the verdict workbench's scope-as-target wiring (#251) on the primitives
   already in v0.9.2 (`usingPolicyForContextTarget`, `ExecutionTargetPolicy::refresh`) — no pin
