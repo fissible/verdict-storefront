@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+## [0.3.0] - 2026-08-24
+
+### Added
+- Scope-as-target order search — the filtered permit, demonstrated (#13) (#14)
+- Bump verdict to ^0.10.0 and re-record all six replay fixtures (#16)
 ## [0.2.0] - 2026-08-20
 
 ### Added
