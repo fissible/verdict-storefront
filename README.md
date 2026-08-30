@@ -54,7 +54,11 @@ reachable*.
 **waiting for human approval** and nothing has moved (no refund row in evidence — but a
 **pending** approval receipt). Sign out, sign in as **Sam Reyes (reviewer)**, open
 **approvals**: the challenge shows the capability, the binding reason, and the
-application's display context. Click **Approve**. Back as Alice: the conversation has
+application's display context. Click **Approve** — the decision passes Verdict's
+required per-receipt authorizer (`app/Support/VerdictApprovalAuthorizer.php`,
+verdict#305): the receipt carries the customer binding captured at proposal
+time, and a non-reviewer — or a receipt with no binding — is refused with an
+`unauthorized` outcome before the receipt is touched. Back as Alice: the conversation has
 resumed and completed. In **evidence**: the receipt is **consumed** by `user:<sam>`,
 `orders.refund` shows permit rows through the approval phases, and there is exactly one
 refund. Submitting the decision a second time reports an outcome error — never a second

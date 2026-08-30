@@ -2,7 +2,7 @@
     "prompt": "Where is my order ORD-1001?",
     "provenance": {
         "model": "huihui_ai/qwen2.5-abliterate:7b via ollama (local Ollama), recorded by demo:record-replays",
-        "recorded_at": "2026-08-24T18:31:29+00:00",
+        "recorded_at": "2026-08-30T23:17:14+00:00",
         "recorded_under_prompt": "Where is my order ORD-1001?"
     },
     "steps": [
@@ -18,7 +18,7 @@
             ]
         },
         {
-            "text": "Your order ORD-1001 has been delivered. It included one Ceramic Pour-Over Set and two Field Notebooks (3-packs). The total was $100.00."
+            "text": "Your order number ORD-1001 has been delivered. It included a Ceramic Pour-Over Set and two Field Notebooks (3-packs). The total was $100.00."
         }
     ]
 }

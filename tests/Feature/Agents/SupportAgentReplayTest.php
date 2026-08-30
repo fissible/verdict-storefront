@@ -99,7 +99,8 @@ final class SupportAgentReplayTest extends TestCase
         $challenge = $verdict->approvals()->challengeForToolCall($receipt->tool_call_id);
         $this->assertNotNull($challenge);
 
-        $verdict->approvals()->approve($challenge->receiptId, $challenge->toolCallId, 'support:demo');
+        $sam = User::where('email', 'sam@example.com')->firstOrFail();
+        $verdict->approvals()->approve($challenge->receiptId, $challenge->toolCallId, 'user:'.$sam->id);
 
         $response = (new SupportAgent)
             ->continueLastConversation($this->alice)
