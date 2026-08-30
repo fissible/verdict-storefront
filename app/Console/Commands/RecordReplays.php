@@ -202,7 +202,11 @@ final class RecordReplays extends Command
             return;
         }
 
-        $verdict->approvals()->approve($challenge->receiptId, $challenge->toolCallId, 'recorder:demo-record-replays');
+        // The seeded reviewer, not a synthetic recorder actor: the required
+        // ApprovalDecisionAuthorizer (verdict#305) verifies the decision maker
+        // is a real reviewer, and the recorder takes the same path production does.
+        $sam = User::where('email', 'sam@example.com')->firstOrFail();
+        $verdict->approvals()->approve($challenge->receiptId, $challenge->toolCallId, 'user:'.$sam->id);
 
         $paused = DB::table('agent_conversation_messages')
             ->where('tool_calls', 'like', '%'.$challenge->toolCallId.'%')

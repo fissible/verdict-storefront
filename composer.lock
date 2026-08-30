@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d8989236462a59c0fd66bd32ddbfe29a",
+    "content-hash": "bc2b0a01727b66223d1d1ceea98a60c4",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -661,16 +661,16 @@
         },
         {
             "name": "fissible/verdict",
-            "version": "v0.10.0",
+            "version": "v0.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fissible/verdict.git",
-                "reference": "5b7050ff109bc861368e8de0ffa03c7843adb386"
+                "reference": "462e63a2ecfccdcd06a06ead78e575227432ca36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fissible/verdict/zipball/5b7050ff109bc861368e8de0ffa03c7843adb386",
-                "reference": "5b7050ff109bc861368e8de0ffa03c7843adb386",
+                "url": "https://api.github.com/repos/fissible/verdict/zipball/462e63a2ecfccdcd06a06ead78e575227432ca36",
+                "reference": "462e63a2ecfccdcd06a06ead78e575227432ca36",
                 "shasum": ""
             },
             "require": {
@@ -683,6 +683,7 @@
                 "php": "^8.3"
             },
             "require-dev": {
+                "composer/semver": "^3.4",
                 "fissible/attest-laravel": "^1.0",
                 "larastan/larastan": "^3.9",
                 "laravel/pint": "^1.29",
@@ -742,9 +743,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fissible/verdict/issues",
-                "source": "https://github.com/fissible/verdict/tree/v0.10.0"
+                "source": "https://github.com/fissible/verdict/tree/v0.14.0"
             },
-            "time": "2026-08-23T23:57:06+00:00"
+            "time": "2026-08-30T20:33:17+00:00"
         },
         {
             "name": "fruitcake/php-cors",

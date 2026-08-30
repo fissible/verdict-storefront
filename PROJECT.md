@@ -54,6 +54,21 @@ pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
 
+**2026-08-30 — verdict v0.14.0 pin bump (#16 issue): the first bump that forces code.**
+- Absorbed four releases (v0.11–v0.14). Two consumer-facing changes bit, both by design:
+  verdict#305 (ApprovalManager now requires a configured `ApprovalDecisionAuthorizer`,
+  fail-closed) and verdict#339 (`withinApprovedToolCalls` takes kernel `ApprovedToolCalls`,
+  never upstream `Decisions`).
+- New: `App\Support\VerdictApprovalAuthorizer` (customer-bound, reviewer-checked, fail-closed);
+  `SupportAgent` captures `approvalContext: ['customer_id' => …]` — the CONVERSATION id is not
+  available at a first-turn pause (laravel/ai persists the conversation after the turn; validated
+  against RememberConversation middleware source), so the participant is the binding.
+  `DecideVerdictApprovalRequest` keeps only the reviewer gate; the binding check now lives on the
+  receipt. Recorder approves as seeded Sam (`user:<id>`), same path production takes.
+- Published migrations: approval_context on receipts, intent_id on evidence, action_intents
+  table (intents lever stays off). Config gains `approvals.authorizer`.
+- All six fixtures re-recorded. Suite 66 tests / 215 assertions; validate advisory-free.
+
 **2026-08-24 — verdict v0.10.0 pin bump absorbed clean (#15).**
 - `fissible/verdict ^0.10.0` (resolved v0.10.0; laravel/ai stays v0.11.0). No code changes
   needed — v0.10.0's consumer-visible additions (`DeclaresExpressibleToolShapes`,

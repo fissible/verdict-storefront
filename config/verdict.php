@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Support\VerdictApprovalAuthorizer;
 use Fissible\Verdict\Approvals\DatabaseApprovalReceiptStore;
 use Fissible\Verdict\Evidence\DatabaseEvidenceRecorder;
 use Fissible\Verdict\ExecutionClaims\DatabaseExecutionClaimStore;
@@ -56,6 +57,12 @@ return [
         // visibility; the adopter sets the policy. Enabling this without a registered approver
         // release policy is a contradiction and refuses at boot. See ADR 0026 §5.
         'strict_provenance' => false,
+        // Class implementing Fissible\Verdict\Contracts\ApprovalDecisionAuthorizer, consulted by
+        // ApprovalManager::approve()/reject() before any receipt is finalized. REQUIRED for
+        // deciding receipts (fail-closed with none set): this is where approved_by is made to
+        // mean something — the receipt's approval_context checked against what the decision
+        // maker may decide (verdict#305; docs/security-model.md § "Who may decide a receipt").
+        'authorizer' => VerdictApprovalAuthorizer::class,
     ],
 
     'evidence' => [

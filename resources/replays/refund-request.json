@@ -2,7 +2,7 @@
     "prompt": "Please refund order ORD-1001 — it arrived damaged.",
     "provenance": {
         "model": "huihui_ai/qwen2.5-abliterate:7b via ollama (local Ollama), recorded by demo:record-replays",
-        "recorded_at": "2026-08-24T18:31:37+00:00",
+        "recorded_at": "2026-08-30T23:17:21+00:00",
         "recorded_under_prompt": "Please refund order ORD-1001 — it arrived damaged."
     },
     "steps": [
@@ -19,7 +19,7 @@
             ]
         },
         {
-            "text": "Your refund has been approved. The amount refunded for order ORD-1001 is $100.00."
+            "text": "Your refund for order number ORD-1001 has been approved. The amount refunded is $100.00. It will be credited to your account shortly."
         }
     ]
 }

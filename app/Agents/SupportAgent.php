@@ -56,9 +56,19 @@ final class SupportAgent implements Agent, HasMiddleware, HasTools, RemembersCon
         // The conversation's participant, not Auth::user(): on a reviewer-driven
         // resume the authenticated user is the approver, but the capability's
         // scoped queries must resolve inside the CUSTOMER's order authority.
-        $context = fn (Request $request): ActionContext => new ActionContext(
-            actor: $this->conversationUser ?? Auth::user(),
-        );
+        // approvalContext is the application-owned binding a receipt carries
+        // (verdict#305): the customer, not the conversation — the conversation
+        // id does not exist yet at a first-turn confirmation pause (laravel/ai
+        // persists it after the turn), and VerdictApprovalAuthorizer fails
+        // closed on receipts that carry no binding.
+        $context = function (Request $request): ActionContext {
+            $customer = $this->conversationUser ?? Auth::user();
+
+            return new ActionContext(
+                actor: $customer,
+                approvalContext: $customer === null ? [] : ['customer_id' => (int) $customer->getKey()],
+            );
+        };
 
         return [
             $verdict->bound(new LookupOrderTool, 'orders.lookup', $context),

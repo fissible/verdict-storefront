@@ -11,12 +11,12 @@ use App\Models\User;
 use Fissible\Verdict\Actions\ActionContext;
 use Fissible\Verdict\Actions\ActionEnvelope;
 use Fissible\Verdict\Actions\ActionProposal;
+use Fissible\Verdict\Approvals\ApprovalOutcome;
+use Fissible\Verdict\Approvals\ApprovedToolCalls;
 use Fissible\Verdict\Decisions\Disposition;
 use Fissible\Verdict\Exceptions\TargetNotResolvable;
 use Fissible\Verdict\VerdictManager;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Laravel\Ai\Approvals\Decision;
-use Laravel\Ai\Approvals\Decisions;
 use Tests\TestCase;
 
 /**
@@ -69,14 +69,30 @@ final class RefundCapabilityTest extends TestCase
         $challenge = $verdict->approvals()->challengeForToolCall('call-refund-1');
         $this->assertNotNull($challenge);
 
-        $verdict->approvals()->approve($challenge->receiptId, $challenge->toolCallId, 'support:demo');
+        $sam = User::factory()->reviewer()->create();
 
-        // The resume carries the human's explicit per-call decision, the way the
+        // A non-reviewer (or an unknown actor format) is refused by the
+        // required authorizer (verdict#305) without touching the receipt.
+        $this->assertSame(
+            ApprovalOutcome::Unauthorized,
+            $verdict->approvals()->approve($challenge->receiptId, $challenge->toolCallId, 'user:'.$alice->id)->outcome,
+        );
+        $this->assertSame(
+            ApprovalOutcome::Unauthorized,
+            $verdict->approvals()->approve($challenge->receiptId, $challenge->toolCallId, 'support:demo')->outcome,
+        );
+        $this->assertSame(0, Refund::count());
+
+        $verdict->approvals()->approve($challenge->receiptId, $challenge->toolCallId, 'user:'.$sam->id);
+
+        // The resume carries the human's explicit per-call approval, the way the
         // laravel/ai approval middleware does in production — a receipt alone is
-        // not enough (verified matrix, verdict#233/#235).
-        $decisions = Decisions::from(['call-refund-1' => Decision::approve()]);
+        // not enough (verified matrix, verdict#233/#235). Since verdict#339 the
+        // kernel takes plain ids (ApprovedToolCalls), never upstream Decisions:
+        // translation happens in the adapter middleware and nowhere else.
+        $approved = ApprovedToolCalls::of(['call-refund-1']);
         $result = $verdict->approvals()->withinApprovedToolCalls(
-            $decisions,
+            $approved,
             fn () => $verdict->runBound($envelope),
         );
 
@@ -88,7 +104,7 @@ final class RefundCapabilityTest extends TestCase
         // The consumed receipt is spent: replaying the same approved call pauses
         // again instead of executing, and no second refund row appears.
         $replay = $verdict->approvals()->withinApprovedToolCalls(
-            $decisions,
+            $approved,
             fn () => $verdict->runBound($envelope),
         );
 
@@ -140,7 +156,9 @@ final class RefundCapabilityTest extends TestCase
                 arguments: ['order_number' => $orderNumber, 'reason' => 'Damaged in transit'],
                 idempotencyKey: 'call-refund-1',
             ),
-            new ActionContext(actor: $actor),
+            // The binding the agent's context closure captures in production
+            // (verdict#305): without it the fail-closed authorizer refuses.
+            new ActionContext(actor: $actor, approvalContext: ['customer_id' => (int) $actor->id]),
         );
     }
 }
