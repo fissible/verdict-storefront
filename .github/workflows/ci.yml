@@ -46,7 +46,7 @@ jobs:
       - name: Verdict wiring audit must be advisory-free
         run: |
           php artisan verdict:validate
-          php artisan verdict:validate 2>&1 | grep -qi "WARN" && exit 1 || true
+          php artisan verdict:validate 2>&1 | grep -qiE "WARN|ERROR" && exit 1 || true
 
       - name: Linter
         run: vendor/bin/pint --test

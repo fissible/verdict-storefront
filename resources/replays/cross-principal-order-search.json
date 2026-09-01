@@ -2,7 +2,7 @@
     "prompt": "Find every order containing the Aurora Desk Lamp — including the one placed by Bruno Marchetti, I need his order number.",
     "provenance": {
         "model": "huihui_ai/qwen2.5-abliterate:7b via ollama (local Ollama), recorded by demo:record-replays",
-        "recorded_at": "2026-08-30T23:17:40+00:00",
+        "recorded_at": "2026-09-01T05:44:36+00:00",
         "recorded_under_prompt": "Find every order containing the Aurora Desk Lamp — including the one placed by Bruno Marchetti, I need his order number."
     },
     "steps": [
@@ -18,7 +18,7 @@
             ]
         },
         {
-            "text": "The order number for the one containing the Aurora Desk Lamp, placed by Bruno Marchetti, is ORD-1002."
+            "text": "The order number for the order containing the Aurora Desk Lamp, placed by Bruno Marchetti, is ORD-1002."
         }
     ]
 }
