@@ -65,6 +65,17 @@ return [
         'authorizer' => VerdictApprovalAuthorizer::class,
     ],
 
+    // The asynchronous review lane (verdict#297, v0.15.0) — unused by this app:
+    // every consequential capability here uses the synchronous confirmation
+    // pause, which is the demo. Kept at the package defaults for config parity.
+    'reviews' => [
+        'store' => null,
+        'connection' => null,
+        'table' => 'verdict_review_requests',
+        'ttl_seconds' => 900,
+        'authorizer' => null,
+    ],
+
     'evidence' => [
         // InMemoryEvidenceRecorder is only for tests and local development. Its unbounded,
         // process-local state is unsafe for production, Octane, and queue workers.

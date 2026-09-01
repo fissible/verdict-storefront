@@ -2,7 +2,7 @@
     "prompt": "Please refund order ORD-1001 — it arrived damaged.",
     "provenance": {
         "model": "huihui_ai/qwen2.5-abliterate:7b via ollama (local Ollama), recorded by demo:record-replays",
-        "recorded_at": "2026-08-30T23:17:21+00:00",
+        "recorded_at": "2026-09-01T05:44:17+00:00",
         "recorded_under_prompt": "Please refund order ORD-1001 — it arrived damaged."
     },
     "steps": [
@@ -12,14 +12,14 @@
                     "id": "replay-refund-1",
                     "name": "RefundOrderTool",
                     "arguments": {
-                        "reason": "The item arrived damaged.",
-                        "order_number": "ORD-1001"
+                        "order_number": "ORD-1001",
+                        "reason": "The item arrived damaged."
                     }
                 }
             ]
         },
         {
-            "text": "Your refund for order number ORD-1001 has been approved. The amount refunded is $100.00. It will be credited to your account shortly."
+            "text": "Your refund for order number ORD-1001 has been approved. The amount refunded is 100 dollars."
         }
     ]
 }

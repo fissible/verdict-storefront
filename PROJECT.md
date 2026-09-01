@@ -54,6 +54,19 @@ pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
 
+**2026-08-31 — verdict v0.15.0 pin bump: additive upstream, one real catch.**
+- v0.15.0 (34 commits: review lane #297, attested issuance #306, receipt-transition events
+  #299, #320 refusal-reason ordering) is additive for this app — suite passed on the pin alone.
+- The probe caught a real upstream gap: `review_request_fingerprint` exists only in the evidence
+  CREATE stub; no upgrade stub, while `verdict:validate` errors on its absence. Filed verdict#466
+  (XS); the app carries an annotated workaround migration
+  (`2026_08_31_000006_add_review_request_fingerprint…`) — **delete it when #466 ships** (the
+  #240-workaround pattern). Fourth catch by the upgrade fixture (#256, #240, now #466).
+- Published the five new v0.15.0 stubs (review_outcome, approver_summary, pending-enumeration
+  index, approval_operations, review_requests); config gains the `reviews` section (unused,
+  parity). CI advisory gate now fails on ERROR as well as WARN — validate's new error class
+  would have passed the old grep silently.
+
 **2026-08-30 — verdict v0.14.0 pin bump (#16 issue): the first bump that forces code.**
 - Absorbed four releases (v0.11–v0.14). Two consumer-facing changes bit, both by design:
   verdict#305 (ApprovalManager now requires a configured `ApprovalDecisionAuthorizer`,
