@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6a1549eb2314d29d3738740ed83988f",
+    "content-hash": "2a29a83625b75589acb0fe27323b7c0c",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -661,16 +661,16 @@
         },
         {
             "name": "fissible/verdict",
-            "version": "v0.15.0",
+            "version": "v0.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fissible/verdict.git",
-                "reference": "9b5aaa24daf08935f2f30052a6bf5be9de58165d"
+                "reference": "bb12e6b311085866e1228228f606b027d69196a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fissible/verdict/zipball/9b5aaa24daf08935f2f30052a6bf5be9de58165d",
-                "reference": "9b5aaa24daf08935f2f30052a6bf5be9de58165d",
+                "url": "https://api.github.com/repos/fissible/verdict/zipball/bb12e6b311085866e1228228f606b027d69196a0",
+                "reference": "bb12e6b311085866e1228228f606b027d69196a0",
                 "shasum": ""
             },
             "require": {
@@ -743,9 +743,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fissible/verdict/issues",
-                "source": "https://github.com/fissible/verdict/tree/v0.15.0"
+                "source": "https://github.com/fissible/verdict/tree/v0.16.0"
             },
-            "time": "2026-09-01T02:53:45+00:00"
+            "time": "2026-09-12T20:05:16+00:00"
         },
         {
             "name": "fruitcake/php-cors",
