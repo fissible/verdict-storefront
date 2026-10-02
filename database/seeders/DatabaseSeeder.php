@@ -46,7 +46,7 @@ final class DatabaseSeeder extends Seeder
         ])->map(fn (string $name, string $email) => User::updateOrCreate(
             ['email' => $email],
             ['name' => $name, 'password' => 'password'],
-        ));
+        ))->all();
 
         // The approval walkthrough's reviewer: decides pending approvals, owns
         // no orders, and is not a customer in any recorded scenario.
@@ -58,7 +58,7 @@ final class DatabaseSeeder extends Seeder
         $products = collect(self::PRODUCTS)->map(fn (array $spec, string $sku) => Product::updateOrCreate(
             ['sku' => $sku],
             ['name' => $spec[0], 'price_cents' => $spec[1]],
-        ));
+        ))->all();
 
         foreach (self::ORDERS as $number => [$email, $status, $placedAt, $items]) {
             $total = collect($items)
