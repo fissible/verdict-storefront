@@ -17,8 +17,8 @@ use Laravel\Ai\Messages\Message;
 use Laravel\Ai\Messages\MessageRole;
 use Laravel\Ai\Responses\Data\FinishReason;
 use Laravel\Ai\Responses\Data\Meta;
+use Laravel\Ai\Responses\Data\TextUsage;
 use Laravel\Ai\Responses\Data\ToolCall;
-use Laravel\Ai\Responses\Data\Usage;
 use Laravel\Ai\Streaming\Events\StreamEvent;
 use LogicException;
 
@@ -77,7 +77,7 @@ final readonly class ReplayGateway implements StepTextGateway
                     $step['tool_calls'],
                 ),
                 finishReason: FinishReason::ToolCalls,
-                usage: new Usage,
+                usage: new TextUsage,
                 meta: $this->meta(),
             );
         }
@@ -149,7 +149,7 @@ final readonly class ReplayGateway implements StepTextGateway
             text: $text,
             toolCalls: [],
             finishReason: FinishReason::Stop,
-            usage: new Usage,
+            usage: new TextUsage,
             meta: $this->meta(),
         );
     }

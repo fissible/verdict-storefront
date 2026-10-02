@@ -2,11 +2,17 @@
 
 @section('content')
     @foreach ($messages as $message)
-        @if (in_array($message->role, ['user', 'assistant'], true) && (filled($message->content) || filled(json_decode($message->tool_calls ?? '[]', true))))
+        @php
+            /* laravel/ai 1.0: an assistant turn stores its round trips in a
+               steps column; each proposal is a tool call inside its step. */
+            $proposals = collect(json_decode($message->steps ?? '[]', true) ?: [])
+                ->flatMap(fn (array $step): array => $step['tool_calls'] ?? []);
+        @endphp
+        @if (in_array($message->role, ['user', 'assistant'], true) && (filled($message->content) || $proposals->isNotEmpty()))
             <div class="msg {{ $message->role }}">
                 <div class="who">{{ $message->role === 'user' ? auth()->user()->name : 'Support agent' }}</div>
                 @if (filled($message->content))<div>{{ $message->content }}</div>@endif
-                @foreach (json_decode($message->tool_calls ?? '[]', true) ?: [] as $call)
+                @foreach ($proposals as $call)
                     <div class="toolcall">→ proposed {{ $call['name'] ?? 'tool' }}({{ json_encode($call['arguments'] ?? []) }})</div>
                 @endforeach
             </div>

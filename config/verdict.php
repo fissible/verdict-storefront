@@ -63,6 +63,16 @@ return [
         // mean something — the receipt's approval_context checked against what the decision
         // maker may decide (verdict#305; docs/security-model.md § "Who may decide a receipt").
         'authorizer' => VerdictApprovalAuthorizer::class,
+        // The permanent consumed-binding replay guard (ADR 0039, v0.17.0) at
+        // package defaults: keyless digests, no pruning window, refusal
+        // evidence in the default table. The keyed (HMAC) mode and retention
+        // are deployment decisions this demo does not make.
+        'consumed_retention_days' => null,
+        'consumed_binding_guard' => [
+            'active_key' => null,
+            'keys' => [],
+        ],
+        'refusals_table' => 'verdict_approval_refusals',
     ],
 
     // The asynchronous review lane (verdict#297, v0.15.0) — unused by this app:

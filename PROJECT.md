@@ -54,6 +54,27 @@ pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
 ## Session handoff notes
 
+**2026-10-01 — verdict v0.18.0 + laravel/ai 1.0: the first major-SDK migration.**
+- v0.17.0 requires laravel/ai ^1.0 and drops 0.x (verdict re-homed its run gates onto the 1.0
+  provider middleware seam). Port, per verdict's adoption guide § "Laravel AI 1.0 run gates":
+  - `SupportAgent` no longer registers `VerdictApprovalMiddleware` (removed `HasMiddleware`):
+    the gate is installed automatically by Verdict's provider subclasses; agent middleware() is
+    step-scoped in 1.0 and feeding the gate a PendingStep was the probe's first TypeError.
+  - Conversation schema: `tool_calls`/`tool_results`/`approval_state` → `steps` + `status`.
+    The published 0.x conversation migration is REPLACED by the SDK's 1.0 create migration
+    (synthetic reversible data — no backfill). Paused-turn lookups (ResumesApprovedConversations,
+    RecordReplays, ApprovalScreenController) now match `status='paused'` + steps LIKE, mirroring
+    `DatabaseConversationStore::pausedRowFor()`; chat.blade renders proposals from steps.
+  - `StepResponse` wants `TextUsage` (not `Usage`) — gateway + test fixtures swapped. The
+    gateway contract itself was unchanged; ReplayGateway/RecordingGateway port untouched.
+- v0.16–v0.18 housekeeping: published consumed-binding-guard, admission-locks, approval-refusals
+  stubs; config gains guard/refusals keys at defaults. (#466's stub was already absorbed by the
+  #21 bump to 0.16.0 — done outside this session with #22's schema-audit CI.)
+- All six fixtures re-recorded on the 1.0 pipeline (each on attempt 1). Suite 68 tests / 219
+  assertions; validate advisory-free; pint clean.
+- Verdict's compatibility matrix has no verified 1.0 row yet — this app is likely the first
+  observation; consider reporting it upstream (docs/laravel-ai-compatibility.md).
+
 **2026-08-31 — verdict v0.15.0 pin bump: additive upstream, one real catch.**
 - v0.15.0 (34 commits: review lane #297, attested issuance #306, receipt-transition events
   #299, #320 refusal-reason ordering) is additive for this app — suite passed on the pin alone.

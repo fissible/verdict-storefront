@@ -22,8 +22,12 @@ final class ResumesApprovedConversations
 {
     public function resume(string $toolCallId, Decision $decision): void
     {
+        // laravel/ai 1.0 schema: assistant turns store their round trips in a
+        // steps JSON column, and a turn awaiting decisions has status=paused —
+        // the same match DatabaseConversationStore::pausedRowFor() makes.
         $paused = DB::table('agent_conversation_messages')
-            ->where('tool_calls', 'like', '%'.$toolCallId.'%')
+            ->where('status', 'paused')
+            ->where('steps', 'like', '%'.$toolCallId.'%')
             ->latest('created_at')
             ->first();
 

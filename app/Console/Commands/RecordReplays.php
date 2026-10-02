@@ -209,7 +209,8 @@ final class RecordReplays extends Command
         $verdict->approvals()->approve($challenge->receiptId, $challenge->toolCallId, 'user:'.$sam->id);
 
         $paused = DB::table('agent_conversation_messages')
-            ->where('tool_calls', 'like', '%'.$challenge->toolCallId.'%')
+            ->where('status', 'paused')
+            ->where('steps', 'like', '%'.$challenge->toolCallId.'%')
             ->latest('created_at')
             ->first();
 
