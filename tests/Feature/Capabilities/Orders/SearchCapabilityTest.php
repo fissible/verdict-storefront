@@ -15,7 +15,7 @@ use Fissible\Verdict\Actions\ActionEnvelope;
 use Fissible\Verdict\Actions\ActionProposal;
 use Fissible\Verdict\Testing\CapabilitySecurityTestKit;
 use Fissible\Verdict\VerdictManager;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Tests\TestCase;
@@ -30,7 +30,9 @@ use Tests\TestCase;
  */
 final class SearchCapabilityTest extends TestCase
 {
-    use RefreshDatabase;
+    // DatabaseMigrations since #28: the capability now consumes rate-limit
+    // units, and DatabaseRateLimitStore refuses a wrapping transaction.
+    use DatabaseMigrations;
 
     public function test_the_capability_is_discovered_and_registered(): void
     {

@@ -12,7 +12,9 @@ use Fissible\Verdict\Actions\ActionEnvelope;
 use Fissible\Verdict\Actions\AuthorizedAction;
 use Fissible\Verdict\Capabilities\Capability;
 use Fissible\Verdict\Contracts\DefinesCapability;
+use Fissible\Verdict\RateLimits\RateLimitPolicy;
 use Fissible\Verdict\Targets\ExecutionTargetPolicy;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use LogicException;
 
@@ -50,6 +52,20 @@ final class SearchCapability implements DefinesCapability
                     'customer_id' => $scope->customerId,
                 ],
                 refreshUsing: fn (ActionEnvelope $envelope, OrderSearchScope $scope): OrderSearchScope => OrderSearchScope::forContext($envelope->context),
+            ))
+            // Rate-limited read (#28): every search spends the authenticated
+            // actor's allowance, so varied filters and injected identifiers
+            // cannot open a fresh quota through the model's arguments.
+            ->rateLimit(RateLimitPolicy::fixedWindow(
+                name: 'orders.search-per-customer',
+                limit: 10,
+                windowSeconds: 60,
+                keyUsing: fn (ActionEnvelope $envelope): array => [
+                    'actor_id' => $envelope->context->actor instanceof Authenticatable
+                        ? $envelope->context->actor->getAuthIdentifier()
+                        : null,
+                ],
+                reason: 'Order search limit reached. Please wait before searching again.',
             ))
             ->executeUsing(function (AuthorizedAction $action): string {
                 if (! $action->target instanceof OrderSearchScope) {
@@ -98,12 +114,12 @@ final class SearchCapability implements DefinesCapability
             $query->whereHas('items.product', fn (Builder $q) => $q->whereRaw('name like ? escape ?', ["%{$escaped}%", '!']));
         }
 
-        return $query->get()->map(fn (Order $order): array => [
+        return array_values($query->get()->map(fn (Order $order): array => [
             'number' => $order->number,
             'status' => $order->status->value,
             'placed_at' => $order->placed_at->toDateString(),
             'total_cents' => $order->total_cents,
             'products' => $order->items->map(fn ($item): string => $item->product->name)->all(),
-        ])->all();
+        ])->all());
     }
 }

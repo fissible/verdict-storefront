@@ -4,7 +4,7 @@ Clone-and-run reference application for [fissible/verdict](https://github.com/fi
 **Spec (source of truth):** [fissible/verdict#237](https://github.com/fissible/verdict/issues/237)
 and its design comment (replay by default, live by opt-in). This file tracks execution, not design.
 
-**Current version:** see `VERSION` (tags track it; v0.3.0 as of 2026-08-24). Release process per
+**Current version:** see `VERSION` (tags track it). Release process per
 [fissible/.github](https://github.com/fissible/.github) — `bash release.sh`.
 
 ## Standing constraints
@@ -52,7 +52,29 @@ Effort key: XS (<1h), S (1–2h), M (~half day), L (~1 day), XL (2–3 days).
 Within a wave, order by smallest-first; #2 before #3 (the owned-order lookup is the headline
 pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
+## Sprint: Kimi review remediation (2026-10-02)
+
+External review (Kimi) of the app as a demonstration; every claim verified against the repo
+before filing. Dependency order, leaves → roots; #30 is parked backlog, not sprint work.
+
+| # | Task | Effort | Deps | Status |
+|---|---|---|---|---|
+| [#26](https://github.com/fissible/verdict-storefront/issues/26) | De-rot version references (README pin line, PROJECT.md version line) | XS | none | **Done** (2026-10-02) |
+| [#28](https://github.com/fissible/verdict-storefront/issues/28) | Rate-limited capability: exercise the configured store + test + README note | M | none | **Done** (2026-10-02) |
+| [#27](https://github.com/fissible/verdict-storefront/issues/27) | README scope section (what is deliberately not demonstrated; validate INFO explained) | S | #28 | **Done** (2026-10-02) |
+| [#29](https://github.com/fissible/verdict-storefront/issues/29) | Larastan in CI at the package's bar (level 8 mirror) | S–M | none | **Done** (2026-10-02) |
+| [#30](https://github.com/fissible/verdict-storefront/issues/30) | Backlog (PM): review lane / intents / attested issuance tour | L+ | PM, verdict-console | Parked |
+
 ## Session handoff notes
+
+**2026-10-02 — Kimi-review sprint executed as a duet (codex implements, this session specifies).**
+- #26/#28/#27/#29 done on feature/sprint-kimi-review: de-rot guards, the orders.search rate
+  limit (10/60s, actor-keyed, FrozenClock-tested), the README "Demo scope" section, and
+  PHPStan level 8 with zero suppressions wired into CI. #30 stays parked for PM.
+- Duet records in .duet/ (review rounds, freeze hashes). Codex's test reviews ran probes and
+  killed real mutants (an arguments-keyed rate limit, a clock the limiter never saw); it also
+  once overreached — wrote the scope section ahead of its own spec's gate — reverted and
+  redone against the approved test.
 
 **2026-10-01 — verdict v0.18.0 + laravel/ai 1.0: the first major-SDK migration.**
 - v0.17.0 requires laravel/ai ^1.0 and drops 0.x (verdict re-homed its run gates onto the 1.0

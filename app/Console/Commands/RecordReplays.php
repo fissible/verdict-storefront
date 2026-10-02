@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Laravel\Ai\Ai;
 use Laravel\Ai\Approvals\Decision;
 use Laravel\Ai\Approvals\Decisions;
+use Laravel\Ai\Contracts\Gateway\StepTextGateway;
 
 /**
  * Re-record the replay fixtures from a REAL model (the upgrade-fixture duty:
@@ -53,7 +54,23 @@ final class RecordReplays extends Command
         }
 
         $provider = Ai::textProvider((string) config('ai.default'));
-        $recorder = new RecordingGateway($provider->textGateway());
+
+        // TextProvider allows replacement but does not promise gateway access.
+        if (! method_exists($provider, 'textGateway')) {
+            $this->error('Recording requires a provider that exposes its text gateway.');
+
+            return self::FAILURE;
+        }
+
+        $gateway = $provider->textGateway();
+
+        if (! $gateway instanceof StepTextGateway) {
+            $this->error('Recording requires a step text gateway.');
+
+            return self::FAILURE;
+        }
+
+        $recorder = new RecordingGateway($gateway);
         $provider->useTextGateway($recorder);
 
         $failures = 0;
@@ -213,6 +230,10 @@ final class RecordReplays extends Command
             ->where('steps', 'like', '%'.$challenge->toolCallId.'%')
             ->latest('created_at')
             ->first();
+
+        if ($paused === null) {
+            return; // No durable turn to resume; the capture remains incomplete.
+        }
 
         $alice = User::where('email', 'alice@example.com')->firstOrFail();
         (new SupportAgent)

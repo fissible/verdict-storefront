@@ -16,6 +16,7 @@ final class ChatController extends Controller
     public function show(Request $request, ReplayScripts $scripts): View
     {
         $user = $request->user();
+        abort_if($user === null, 401);
 
         $conversationId = DB::table('agent_conversations')
             ->where('participant_type', $user::class)
@@ -42,12 +43,15 @@ final class ChatController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $user = $request->user();
+        abort_if($user === null, 401);
+
         $validated = $request->validate([
             'message' => ['required', 'string', 'max:500'],
         ]);
 
         (new SupportAgent)
-            ->forParticipant($request->user())
+            ->forParticipant($user)
             ->prompt($validated['message'], model: config('demo.live_model'));
 
         return redirect()->route('chat');

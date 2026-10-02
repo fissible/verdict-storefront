@@ -19,7 +19,7 @@ use Stringable;
  */
 final class LookupOrderTool implements Tool
 {
-    public function description(): Stringable|string
+    public function description(): string
     {
         return 'Look up the status and contents of one of the customer\'s own orders by its order number.';
     }

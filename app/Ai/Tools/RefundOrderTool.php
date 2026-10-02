@@ -18,7 +18,7 @@ use Stringable;
  */
 final class RefundOrderTool implements Tool
 {
-    public function description(): Stringable|string
+    public function description(): string
     {
         return 'Request a full refund of one of the customer\'s own delivered orders. Requires human approval before executing.';
     }

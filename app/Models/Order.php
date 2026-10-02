@@ -10,7 +10,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property OrderStatus $status
+ * @property Carbon $placed_at
+ */
 final class Order extends Model
 {
     /** @use HasFactory<OrderFactory> */
