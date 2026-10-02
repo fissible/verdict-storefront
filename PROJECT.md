@@ -24,6 +24,7 @@ and its design comment (replay by default, live by opt-in). This file tracks exe
 
 | Date | Decision | Rationale |
 |---|---|---|
+| 2026-10-02 | verdict-storefront is the executable adoption guide, NOT a feature tour (#30 closed won't-do) | Review lane belongs to verdict-console (integration question flagged to PM: https://github.com/fissible/projects/issues/5); attested issuance belongs in attest-laravel docs; write-ahead intents may ride a future bump. Demo scope section (#27) is the standing boundary statement. |
 | 2026-08-19 | Repo name: `verdict-storefront` (over `verdict-demo`) | The spec's domain is the name: a storefront support agent, the same domain the attack packs and recorded evaluations use. It is a long-lived reference app and upgrade fixture, not a throwaway demo; "demo"/"reference app" live in the description and keywords for discoverability. |
 | 2026-08-19 | Tracked as verdict v0.9.0 work under [verdict#237](https://github.com/fissible/verdict/issues/237); no separate portfolio ROADMAP.md product row | verdict self-tracks in its MILESTONES.md (v0.9.0 table already carries #237); the portfolio ROADMAP does not track verdict, so a row for its reference app alone would be inconsistent. Flagged to PM. |
 | 2026-08-19 | `DatabaseEvidenceRecorder` configured from wave 0 | Acceptance requires an advisory-free `verdict:validate`, and every walkthrough ends at an evidence row — the durable recorder is not optional here. |
@@ -63,7 +64,7 @@ before filing. Dependency order, leaves → roots; #30 is parked backlog, not sp
 | [#28](https://github.com/fissible/verdict-storefront/issues/28) | Rate-limited capability: exercise the configured store + test + README note | M | none | **Done** (2026-10-02) |
 | [#27](https://github.com/fissible/verdict-storefront/issues/27) | README scope section (what is deliberately not demonstrated; validate INFO explained) | S | #28 | **Done** (2026-10-02) |
 | [#29](https://github.com/fissible/verdict-storefront/issues/29) | Larastan in CI at the package's bar (level 8 mirror) | S–M | none | **Done** (2026-10-02) |
-| [#30](https://github.com/fissible/verdict-storefront/issues/30) | Backlog (PM): review lane / intents / attested issuance tour | L+ | PM, verdict-console | Parked |
+| [#30](https://github.com/fissible/verdict-storefront/issues/30) | Feature-tour extensions | — | — | **Closed, won't-do** (2026-10-02): adoption guide, not feature tour; console question → [projects issue](https://github.com/fissible/projects/issues/5) |
 
 ## Session handoff notes
 
