@@ -67,7 +67,7 @@ final readonly class ReplayGateway implements StepTextGateway
             );
         }
 
-        $step = $script->steps[$this->stepIndex($messages)] ?? end($script->steps);
+        $step = $script->steps[$this->stepIndex($messages)] ?? $script->steps[array_key_last($script->steps)] ?? [];
 
         if (! empty($step['tool_calls'])) {
             return new StepResponse(

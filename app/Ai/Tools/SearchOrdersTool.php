@@ -20,7 +20,7 @@ use Stringable;
  */
 final class SearchOrdersTool implements Tool
 {
-    public function description(): Stringable|string
+    public function description(): string
     {
         return 'Search the customer\'s own orders by status and/or product name. Returns every matching order.';
     }

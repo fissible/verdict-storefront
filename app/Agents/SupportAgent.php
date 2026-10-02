@@ -9,6 +9,7 @@ use App\Ai\Tools\RefundOrderTool;
 use App\Ai\Tools\SearchOrdersTool;
 use Fissible\Verdict\Actions\ActionContext;
 use Fissible\Verdict\VerdictManager;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Ai\Concerns\RemembersConversations;
 use Laravel\Ai\Contracts\Agent;
@@ -17,7 +18,7 @@ use Laravel\Ai\Contracts\RemembersConversations as RemembersConversationsContrac
 use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Promptable;
 use Laravel\Ai\Tools\Request;
-use Stringable;
+use LogicException;
 
 /**
  * The storefront support agent — the app's single Verdict integration point.
@@ -31,7 +32,7 @@ final class SupportAgent implements Agent, HasTools, RemembersConversationsContr
     use Promptable;
     use RemembersConversations;
 
-    public function instructions(): Stringable|string
+    public function instructions(): string
     {
         return 'You are the support agent for a small storefront. Help the authenticated customer '
             .'with their own orders: look up an order by number, search their orders by status or '
@@ -61,6 +62,10 @@ final class SupportAgent implements Agent, HasTools, RemembersConversationsContr
         // closed on receipts that carry no binding.
         $context = function (Request $request): ActionContext {
             $customer = $this->conversationUser ?? Auth::user();
+
+            if ($customer !== null && ! $customer instanceof Model) {
+                throw new LogicException('Storefront conversations require an Eloquent participant.');
+            }
 
             return new ActionContext(
                 actor: $customer,

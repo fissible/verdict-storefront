@@ -15,7 +15,7 @@ final class DecideVerdictApprovalRequest extends FormRequest
         // knows — now travels ON the receipt and is enforced fail-closed by
         // VerdictApprovalAuthorizer inside ApprovalManager (verdict#305),
         // where the artisan and recorder paths share it too.
-        return $this->user()?->is_reviewer ?? false;
+        return $this->user()->is_reviewer ?? false;
     }
 
     /** @return array<string, list<string>> */

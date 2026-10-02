@@ -57,7 +57,7 @@ final class RecordingGateway implements StepTextGateway
                 'id' => $call->id,
                 'name' => $call->name,
                 'arguments' => $call->arguments,
-            ], $response->toolCalls);
+            ], array_values($response->toolCalls));
         }
 
         if ($response->text !== '') {

@@ -38,7 +38,8 @@ final class ApprovalScreenController extends Controller
 
                 // 1.0 schema: each assistant turn stores its round trips in
                 // steps, each tool call inside the step that proposed it.
-                $call = collect(json_decode($paused->steps ?? '[]', true) ?: [])
+                $steps = json_decode($paused->steps ?? '[]', true);
+                $call = collect(is_array($steps) ? $steps : [])
                     ->flatMap(fn (array $step): array => $step['tool_calls'] ?? [])
                     ->firstWhere('id', $receipt->tool_call_id);
 
@@ -46,7 +47,7 @@ final class ApprovalScreenController extends Controller
                     'challenge' => $challenge,
                     'arguments' => $call['arguments'] ?? [],
                     'customer' => $paused?->participant_id !== null
-                        ? User::find($paused->participant_id)?->name
+                        ? User::whereKey($paused->participant_id)->first()?->name
                         : null,
                 ];
             })

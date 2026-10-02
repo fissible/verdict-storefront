@@ -114,12 +114,12 @@ final class SearchCapability implements DefinesCapability
             $query->whereHas('items.product', fn (Builder $q) => $q->whereRaw('name like ? escape ?', ["%{$escaped}%", '!']));
         }
 
-        return $query->get()->map(fn (Order $order): array => [
+        return array_values($query->get()->map(fn (Order $order): array => [
             'number' => $order->number,
             'status' => $order->status->value,
             'placed_at' => $order->placed_at->toDateString(),
             'total_cents' => $order->total_cents,
             'products' => $order->items->map(fn ($item): string => $item->product->name)->all(),
-        ])->all();
+        ])->all());
     }
 }
