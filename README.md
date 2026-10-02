@@ -122,7 +122,11 @@ This app does not demonstrate the review lane (`requireReview`), write-ahead int
 The keyed consumed-binding guard is outside the scope of this demo — enabling it is a deployment
 decision, and this app leaves the guard at its keyless defaults. These are demo
 boundaries, not Verdict limitations. Rate limits are demonstrated by `orders.search`
-(#28).
+(#28): 10 searches per customer per 60 seconds, keyed by the authenticated actor so
+model-supplied arguments can never mint a fresh quota. Run
+`php artisan test --filter=SearchRateLimitTest` to see the demonstration. The
+walkthrough chat cannot hit the limit in replay mode — recorded conversations don't
+loop.
 
 On a fresh database, `verdict:validate` reports the expected INFO message:
 "Verdict wiring audit found no applicable capability configuration."
