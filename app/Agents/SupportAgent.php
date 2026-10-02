@@ -8,12 +8,10 @@ use App\Ai\Tools\LookupOrderTool;
 use App\Ai\Tools\RefundOrderTool;
 use App\Ai\Tools\SearchOrdersTool;
 use Fissible\Verdict\Actions\ActionContext;
-use Fissible\Verdict\LaravelAi\VerdictApprovalMiddleware;
 use Fissible\Verdict\VerdictManager;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Ai\Concerns\RemembersConversations;
 use Laravel\Ai\Contracts\Agent;
-use Laravel\Ai\Contracts\HasMiddleware;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\RemembersConversations as RemembersConversationsContract;
 use Laravel\Ai\Contracts\Tool;
@@ -26,7 +24,7 @@ use Stringable;
  * Its tools are the definitions in app/Ai/Tools wired through Verdict via
  * VerdictManager::bound(): the model proposes, the capability authorizes.
  */
-final class SupportAgent implements Agent, HasMiddleware, HasTools, RemembersConversationsContract
+final class SupportAgent implements Agent, HasTools, RemembersConversationsContract
 {
     // Conversational on purpose: a confirmation pause is only resumable when
     // the pending tool call can be replayed from durable conversation history.
@@ -77,16 +75,13 @@ final class SupportAgent implements Agent, HasMiddleware, HasTools, RemembersCon
         ];
     }
 
-    /**
-     * Required: VerdictApprovalMiddleware is not auto-registered, and without
-     * it an approved receipt can never resume (docs/adoption-guide.md).
-     *
-     * @return array<int, object>
+    /*
+     * No middleware() registration: under laravel/ai 1.0, Verdict's provider
+     * subclasses install the approval run gate automatically
+     * (docs/adoption-guide.md § "Laravel AI 1.0 run gates"). Agent
+     * middleware() is step-scoped there, and registering the gate manually
+     * feeds it a PendingStep — remove, don't move, on upgrade.
      */
-    public function middleware(): array
-    {
-        return [app(VerdictApprovalMiddleware::class)];
-    }
 
     public function provider(): string
     {

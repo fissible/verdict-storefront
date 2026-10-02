@@ -11,8 +11,8 @@ use Laravel\Ai\Gateway\StepContext;
 use Laravel\Ai\Gateway\StepResponse;
 use Laravel\Ai\Responses\Data\FinishReason;
 use Laravel\Ai\Responses\Data\Meta;
+use Laravel\Ai\Responses\Data\TextUsage;
 use Laravel\Ai\Responses\Data\ToolCall;
-use Laravel\Ai\Responses\Data\Usage;
 use Tests\TestCase;
 
 /**
@@ -33,8 +33,8 @@ final class RecordingGatewayTest extends TestCase
                 $this->calls++;
 
                 return $this->calls === 1
-                    ? new StepResponse('', [new ToolCall('live-1', 'LookupOrderTool', ['order_number' => 'ORD-1001'])], FinishReason::ToolCalls, new Usage, new Meta('ollama', 'test-model'))
-                    : new StepResponse('Here is your order.', [], FinishReason::Stop, new Usage, new Meta('ollama', 'test-model'));
+                    ? new StepResponse('', [new ToolCall('live-1', 'LookupOrderTool', ['order_number' => 'ORD-1001'])], FinishReason::ToolCalls, new TextUsage, new Meta('ollama', 'test-model'))
+                    : new StepResponse('Here is your order.', [], FinishReason::Stop, new TextUsage, new Meta('ollama', 'test-model'));
             }
 
             public function generateStreamStep($invocationId, $provider, $model, $instructions, $messages, $tools, $schema, $options, $timeout, $stepContext): \Generator
@@ -64,7 +64,7 @@ final class RecordingGatewayTest extends TestCase
         {
             public function generateTextStep($provider, $model, $instructions, $messages, $tools, $schema, $options, $timeout, $stepContext): StepResponse
             {
-                return new StepResponse('hello', [], FinishReason::Stop, new Usage, new Meta('ollama', 'test-model'));
+                return new StepResponse('hello', [], FinishReason::Stop, new TextUsage, new Meta('ollama', 'test-model'));
             }
 
             public function generateStreamStep($invocationId, $provider, $model, $instructions, $messages, $tools, $schema, $options, $timeout, $stepContext): \Generator

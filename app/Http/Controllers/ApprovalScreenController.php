@@ -31,11 +31,15 @@ final class ApprovalScreenController extends Controller
                 }
 
                 $paused = DB::table('agent_conversation_messages')
-                    ->where('tool_calls', 'like', '%'.$receipt->tool_call_id.'%')
+                    ->where('status', 'paused')
+                    ->where('steps', 'like', '%'.$receipt->tool_call_id.'%')
                     ->latest('created_at')
                     ->first();
 
-                $call = collect(json_decode($paused->tool_calls ?? '[]', true) ?: [])
+                // 1.0 schema: each assistant turn stores its round trips in
+                // steps, each tool call inside the step that proposed it.
+                $call = collect(json_decode($paused->steps ?? '[]', true) ?: [])
+                    ->flatMap(fn (array $step): array => $step['tool_calls'] ?? [])
                     ->firstWhere('id', $receipt->tool_call_id);
 
                 return [
