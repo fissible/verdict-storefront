@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+## [0.7.0] - 2026-10-02
+
+### Added
+- Bump to verdict ^0.18.0 and laravel/ai 1.0 — the major-SDK migration (#24)
 ## [0.6.0] - 2026-09-12
 
 ### Added
