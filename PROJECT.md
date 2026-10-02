@@ -52,6 +52,19 @@ Effort key: XS (<1h), S (1–2h), M (~half day), L (~1 day), XL (2–3 days).
 Within a wave, order by smallest-first; #2 before #3 (the owned-order lookup is the headline
 pattern and #4's fixtures want it stable first). Closing #10 closes verdict#237.
 
+## Sprint: Kimi review remediation (2026-10-02)
+
+External review (Kimi) of the app as a demonstration; every claim verified against the repo
+before filing. Dependency order, leaves → roots; #30 is parked backlog, not sprint work.
+
+| # | Task | Effort | Deps | Status |
+|---|---|---|---|---|
+| [#26](https://github.com/fissible/verdict-storefront/issues/26) | De-rot version references (README pin line, PROJECT.md version line) | XS | none | Open |
+| [#28](https://github.com/fissible/verdict-storefront/issues/28) | Rate-limited capability: exercise the configured store + test + README note | M | none | Open |
+| [#27](https://github.com/fissible/verdict-storefront/issues/27) | README scope section (what is deliberately not demonstrated; validate INFO explained) | S | #28 | Open |
+| [#29](https://github.com/fissible/verdict-storefront/issues/29) | Larastan in CI at the package's bar (level 8 mirror) | S–M | none | Open |
+| [#30](https://github.com/fissible/verdict-storefront/issues/30) | Backlog (PM): review lane / intents / attested issuance tour | L+ | PM, verdict-console | Parked |
+
 ## Session handoff notes
 
 **2026-10-01 — verdict v0.18.0 + laravel/ai 1.0: the first major-SDK migration.**
