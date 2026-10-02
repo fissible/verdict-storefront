@@ -115,6 +115,25 @@ inherited from Verdict's evaluation notes:
   Verdict's denial is deterministic policy. This app uses no forcing techniques
   (no `tool_choice`, no prefill, no comply-instructions) in either mode.
 
+## Demo scope
+
+This app does not demonstrate the review lane (`requireReview`), write-ahead intents
+(the #160 lever), or attested issuance (the ADR 0038 strict tier).
+The keyed consumed-binding guard is outside the scope of this demo — enabling it is a deployment
+decision, and this app leaves the guard at its keyless defaults. These are demo
+boundaries, not Verdict limitations. Rate limits are demonstrated by `orders.search`
+(#28).
+
+On a fresh database, `verdict:validate` reports the expected INFO message:
+"Verdict wiring audit found no applicable capability configuration."
+Capability configurations are recorded when capabilities first run — before that,
+there is no recorded configuration for the wiring audit to inspect.
+
+Live mode is not exercised in CI — the clone-and-run bar requires PHP and Composer
+only, with no model API key or local model server. To validate live behavior, run
+`DEMO_MODE=live php artisan demo:record-replays` with the provider configuration
+described above to re-record and validate the fixtures against a live model.
+
 ## Versioning
 
 This app pins **tagged Verdict releases only** — never `dev-main`. Each Verdict
