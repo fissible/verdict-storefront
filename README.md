@@ -119,7 +119,7 @@ inherited from Verdict's evaluation notes:
 
 This app pins **tagged Verdict releases only** — never `dev-main`. Each Verdict
 release includes bumping this app, which is what makes it an upgrade-path fixture.
-Current pin: `fissible/verdict:^0.8.0`.
+Current pin: see `composer.json` for the live Verdict requirement.
 
 ## License
 
